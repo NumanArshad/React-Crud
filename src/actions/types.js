@@ -1,0 +1,2 @@
+export const GET_ALL_POSTS="ALL POSTS"
+export const GET_SINGLE_POST="FETCH SINGLE POST"
