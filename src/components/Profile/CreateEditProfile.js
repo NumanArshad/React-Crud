@@ -1,37 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Modal, Button,Form } from 'react-bootstrap'
-import axios from 'axios'
 
-const CreateEditProfile = ({ show, handleClose, fetchResponse}) => {
+const CreateEditProfile = ({ show, handleClose,createPost,singlePost}) => {
 
  const[postText,handlePostText]=useState('')
 
-
+const [showModal,setShow]=useState(show)
 const handleSubmit=()=>{
+  createPost(postText)
+  handleClose()
   
-  let config= {headers:{'Authorization':localStorage.getItem('token')}}
-  axios.post("http://3d56c63146f8.ngrok.io/api/v1/posts",
-  {text:postText},
- config
-)
-.then(
-    res=>{
-      if(res.status==200){
-        handleClose()
-        fetchResponse()
-
-      }
-      res.status==200 && fetchResponse()})
-.catch((error)=>alert(JSON.stringify(error)))
-
 }
+
+useEffect(()=>{
+ setShow(show)
+ if(Object.entries(singlePost).length>0){
+      setShow(!show)
+      handlePostText(singlePost.text)
+ }
+ 
+   
+},[show,singlePost])
+
+
 
 
   return (
     <>
 
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
@@ -40,19 +38,13 @@ const handleSubmit=()=>{
           <Form>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>post message</Form.Label>
-              <Form.Control type="text" placeholder="Enter post text" onChange={(e)=>handlePostText(e.target.value)}  />
-              {/* <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text> */}
+              <Form.Control type="text" placeholder="Enter post text" 
+              value={postText}
+              onChange={(e)=>handlePostText(e.target.value)}  />
+             
             </Form.Group>
 
-            {/* <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group> */}
-            {/* <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group> */}
+         
             <Button variant="primary" onClick={handleSubmit}>
               Submit
        </Button>
