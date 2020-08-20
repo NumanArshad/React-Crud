@@ -1,5 +1,5 @@
 import axios from "axios"
-import {START_LOADING, STOP_LOADING} from '../actions/types'
+import {START_LOADING, STOP_LOADING} from './types'
 import store from '../store'
 let axiosIntance=axios.create(
     {

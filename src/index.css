@@ -43,3 +43,7 @@ height: 320px;
 .header-cursor{
 cursor: pointer;
 }
+
+.invalid{
+  color:red
+}

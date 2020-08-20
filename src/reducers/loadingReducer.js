@@ -1,4 +1,4 @@
-import {START_LOADING,STOP_LOADING} from '../actions/types'
+import {START_LOADING,STOP_LOADING} from '../utils/types'
 const initialState={
     loading:false
 }

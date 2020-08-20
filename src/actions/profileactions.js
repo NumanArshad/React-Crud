@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {GET_ALL_POSTS,GET_SINGLE_POST,START_LOADING, STOP_LOADING} from './types'
+import {GET_ALL_POSTS,GET_SINGLE_POST,START_LOADING, STOP_LOADING} from '../utils/types'
 import toast from '../utils/toast'
 import axiosIntance from "../utils/configInterceptor"
 let post_base_url=process.env.REACT_APP_BASE_URL+'/posts'

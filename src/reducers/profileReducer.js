@@ -1,4 +1,4 @@
-import {GET_ALL_POSTS,GET_SINGLE_POST} from '../actions/types'
+import {GET_ALL_POSTS,GET_SINGLE_POST} from '../utils/types'
 const initialState={
     posts:[],
     single_post:{}
