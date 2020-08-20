@@ -1,8 +1,11 @@
 import  {combineReducers} from 'redux'
-import profileReducer from './profileReducer'
+import postReducer from './postReducer'
 import loadingReducer from './loadingReducer'
+import authReducer from './authReducer'
+
 const rootReducer=combineReducers({
-    profileReducer:profileReducer,
-    loadingReducer:loadingReducer
+    postReducer:postReducer,
+    loadingReducer:loadingReducer,
+    authReducer:authReducer
 })
 export default rootReducer

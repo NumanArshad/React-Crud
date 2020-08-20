@@ -2,21 +2,23 @@
 import React, { useState } from 'react'
 import '../index.css'
 import axios from 'axios'
+import {signup} from "../actions/authActions"
+
 const SignUp=({history})=>{
-    const [formData,setFormData]=useState({email:'',password:''})
+    const [formData,setFormData]=useState({name:'',email:'',password:''})
     const {name,email,password}=formData
     const submitForm=()=>{
         
-       
-    axios.post("http://5147acf5eea1.ngrok.io/api/v1/users/signup",{name:name,email:email,password:password}
-    )
-    .then(
-        res=>{
-            if(res.status==200){
-                localStorage.setItem('token',res.data.token)
-               history.push('/dashboard')
-                    }})
-    .catch((error)=>alert(JSON.stringify(error)))
+        signup(formData)
+    // axios.post("http://fcc9ef4479ad.ngrok.io/api/v1/users/signup",{name:name,email:email,password:password}
+    // )
+    // .then(
+    //     res=>{
+    //         if(res.status==200){
+    //             localStorage.setItem('token',res.data.token)
+    //            history.push('/dashboard')
+    //                 }})
+    // .catch((error)=>alert(JSON.stringify(error)))
     
     
     }
@@ -24,8 +26,7 @@ const SignUp=({history})=>{
         return(
         
             <div id="login">
-            
-            <div className="container">
+               <div className="container">
                 <div id="login-row" className="row justify-content-center align-items-center">
                     <div id="login-column" className="col-md-6">
                         <div id="login-box signUp-height" className="col-md-12">
@@ -35,7 +36,7 @@ const SignUp=({history})=>{
                                 <div className="form-group">
                                     <label htmlFor="username" className="text-info">Username:</label><br />
                                     <input type="text" name="username" id="username" className="form-control"
-                                    value={email}
+                                    value={name}
                                     onChange={(e)=>setFormData({...formData,name:e.target.value})} />
                                 </div>
                                 <div className="form-group">
