@@ -1,12 +1,8 @@
 import React from "react"
-import { Table, Button, Dropdown, Nav, Navbar, Form, FormControl } from 'react-bootstrap'
+import { Dropdown, Nav, Navbar } from 'react-bootstrap'
 import {logout} from "../actions/authActions"
 const Header=({history})=>{
-    // const logout = () => {
-    //     localStorage.clear()
-    //     history.replace("login")
-    // }
-    return(
+  return(
         <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#home" style={{ maxWidth: 30, maxHeight: 30 }}><img src={localStorage.getItem('avatar')} style={{ width: '100%' }} /></Navbar.Brand>
         <Nav className="mr-auto">

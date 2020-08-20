@@ -1,20 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect} from 'react'
 import { Modal, Button,Form } from 'react-bootstrap'
 
 const CreateEditPost = ({ show, handleClose,createPost,singlePost,title}) => {
-
- const[postText,handlePostText]=useState('')
-
+const[postText,handlePostText]=useState('')
 const [showModal,setShow]=useState(show)
 const handleSubmit=()=>{
   createPost(postText)
   handleClose()
-  
-}
+  }
 
 useEffect(()=>{
 
- setShow(show)
+setShow(show)
  handlePostText('')
  if(Object.entries(singlePost).length>0){
   

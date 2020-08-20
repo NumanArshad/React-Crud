@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Redirect, useLocation, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import React from 'react'
 import Login from './components/Login'
 import SignUp from './components/Signup'
@@ -9,7 +9,7 @@ import NotFound from "./common/NotFound"
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} render={(props) => {
 
-        return (localStorage.getItem('token') ?
+        return (localStorage.getItem('name') ?
             <><Header {...props} />
                 <Component {...props} /></>
             : <Redirect to="/login" />)

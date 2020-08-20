@@ -13,16 +13,11 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
     const [showmodal, handleShow] = useState(false)
     const [selectedPostId, handleSelected] = useState('')
 
-
-
     useEffect(() => {
-    
-        // alert(JSON.stringify(postsList))
         const totalPages = Math.ceil(postsList.length / paginateObject.perPage)
-        setPaginate({ ...paginateObject, pageCount: totalPages,offset:0,currentPage:0 })
+        setPaginate({ ...paginateObject, pageCount: totalPages, offset: 0, currentPage: 0 })
         const sliceData = postsList.slice(paginateObject.offset, paginateObject.perPage)
         setSlice(sliceData)
-       
     }, [postsList])
 
     const handlePageClick = (e) => {
@@ -33,19 +28,19 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
     }
 
     const requestSort = (key) => {
+
         let direction = "ascending"
         alert(configSort.direction)
         if (configSort.key === key && configSort.direction === direction) {
-            // alert(configSort.direction==direction)
             direction = "descending"
         }
         handleSort(key, direction)
     }
 
     const handleSort = (key, direction) => {
-
         handleConfig({ key, direction })
-        const updated = sliceData.sort((a, b) => {
+
+        const updatedSort = postsList.sort((a, b) => {
             if (a[key] < b[key]) {
                 return direction === "ascending" ? -1 : 1
             }
@@ -54,15 +49,17 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
             }
             return 0
         })
-        setSlice(updated)
-
+        
+        const {offset,perPage}=paginateObject
+        const sliceData = updatedSort.slice(offset,offset+ perPage)
+        setSlice(sliceData)
+        //  setPaginate({ ...paginateObject, offset: selectedOffset, currentPage: e.selected })
     }
 
     const handleClose = (deleteConfirm) => {
-        
         if (deleteConfirm) {
-            deletePost(selectedPostId)    
-        }    
+            deletePost(selectedPostId)
+        }
         handleShow(false)
     }
 
@@ -71,17 +68,19 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
         handleShow(true)
     }
 
-
     return (
         <React.Fragment>
             <ConfirmatioModal show={showmodal} handleClose={handleClose} />
             <Table striped bordered hover>
                 <thead>
-
                     <tr>
-                        <th className="header-cursor" onClick={() => requestSort('_id')}>id <i class="fa fa-angle-up" style={{ display: configSort.key == "_id" ? "visible" : "none" }}></i></th>
-                        <th className="header-cursor" onClick={() => requestSort('text')}>text <i class="fa fa-angle-up" style={{ display: configSort.key === 'text' ? "visible" : "none" }}></i></th>
-                        <th className="header-cursor" onClick={() => requestSort('date')}>date <i class="fa fa-angle-up" style={{ display: configSort.key == "date" ? "visible" : "none" }}></i></th>
+                        <th className="header-cursor" onClick={() => requestSort('_id')}>id <i class="fa fa-sort"></i></th>
+                        <th className="header-cursor" onClick={() => requestSort('text')}>text 
+                          <i class="fa fa-sort"></i>
+                        {/* <i class="fa fa-angle-up" style={{ display: configSort.key === 'text' ? "visible" : "none" }}></i> */}
+                        </th>
+                        <th className="header-cursor" onClick={() => requestSort('date')}>date
+                           <i class="fa fa-sort"></i></th>
                         <th>user</th>
                         <th>Actions</th>
                     </tr>
@@ -94,21 +93,15 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
                             <td>{text}</td>
                             <td>{moment(date).format('MMMM Do YYYY h:mm:ss a')}</td>
                             <td>{user}</td>
-
                             <td>
                                 <Dropdown>
-                                    <Dropdown.Toggle id="dropdown-basic">
-                                        Actions
-                                    {/* <img src="/more.png" style={{maxWidth:20,maxHeight:20}}  deletePost(_id)/> */}
-                                    </Dropdown.Toggle>
-
-                                    <Dropdown.Menu>
+                                    <Dropdown.Toggle id="dropdown-basic">Actions</Dropdown.Toggle>
+                                     <Dropdown.Menu>
                                         <Dropdown.Item onClick={() => getSinglePost(_id)}>Edit</Dropdown.Item>
                                         <Dropdown.Item onClick={() => triggerModal(_id)}>Delete</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
-
-                            </td>
+</td>
                         </tr>)
                     })}
                     {/* {!loading && sliceData.map(({ albumId, title, id, thumbnailUrl }) => {
@@ -124,7 +117,7 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
                 </tbody>
             </Table>
 
-            <ReactPaginate
+         {loading && <ReactPaginate
                 previousLabel={"prev"}
                 nextLabel={"next"}
                 breakLabel={"..."}
@@ -135,14 +128,9 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
                 onPageChange={handlePageClick}
                 containerClassName={"pagination"}
                 subContainerClassName={"pages pagination"}
-                activeClassName={"active"} />
+                activeClassName={"active"} />}   
         </React.Fragment>
     )
 }
-// const mapStateToProps=(state)=>({
-//      postsList:state.profileReducer.posts,
-//      loading:state.loadingReducer.loading
 
-
-// })
 export default PostTable

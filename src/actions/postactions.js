@@ -1,10 +1,8 @@
-import axios from 'axios'
-import {GET_ALL_POSTS,GET_SINGLE_POST,START_LOADING, STOP_LOADING} from '../utils/types'
-import toast from '../utils/toast'
+import {GET_ALL_POSTS,GET_SINGLE_POST} from '../utils/types'
 import axiosIntance from "../utils/configInterceptor"
-
+import axios from "axios"
 export const fetchAllPosts=()=>dispatch=>{
-axiosIntance.get('/posts')
+  axiosIntance.get('/posts')
    .then(res=>{ 
  dispatch({type:GET_ALL_POSTS,payload:res.data})  
 

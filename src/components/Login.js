@@ -1,17 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import joi from "joi-browser"
-import {login} from "../actions/authActions"
+import { login } from "../actions/authActions"
 import { customValidator } from "../utils/formValidation"
+import { useSelector } from "react-redux"
 
 const Login = ({ history }) => {
-const [formData, setFormData] = useState({ email: '', password: '' })
+  const [formData, setFormData] = useState({ email: '', password: '' })
   const { email, password } = formData
-  const [load,setLoad]=useState('')
   const [error, setError] = useState({})
+  const { errors: customError } = useSelector(state => state.errorReducer)
 
-  const schema ={
-    email: joi.string().email({ minDomainSegments: 2  }).error(() => {
+  useEffect(() => {
+    setError(customError)
+  }, [customError])
+
+  const schema = {
+    email: joi.string().email({ minDomainSegments: 2 }).error(() => {
       return {
         message: 'email is required.',
       }
@@ -22,165 +27,72 @@ const [formData, setFormData] = useState({ email: '', password: '' })
       }
     }),
   };
+
   const submitForm = () => {
-   
-  
-    if(validateForm()){
-      
+    if (validateForm()) {
       login(formData)
-    //   setLoad(true)
-    //    alert("called")
-    // axios.post("http://fcc9ef4479ad.ngrok.io/api/v1/users/login", { email: email, password: password }
-    // ).then(
-    //   res => {
-    //     if (res.status == 200) {
-    //       setLoad(false)
-    //       localStorage.setItem('token', res.data.token)
-    //       let { id, name, avatar } = jwtDecode(res.data.token)
-    //       localStorage.setItem('id', id)
-    //       localStorage.setItem('name', name)
-    //       localStorage.setItem('avatar', avatar)
-    //       history.push('/dashboard')
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error)
-    //   })
     }
   }
 
-  const validateForm=()=>{
-    let isValidated=true
+  const validateForm = () => {
+    let isValidated = true
     setError({})
     console.dir(schema)
-    let errors = customValidator({email:email,password:password}, schema)
-    
+    let errors = customValidator({ email: email, password: password }, schema)
     if (Object.keys(errors).length > 0) {
-      
       setError(errors)
-      isValidated=false
-      
+      isValidated = false
     }
     return isValidated
   }
 
-const validateProperty=(name,value)=>{
- const obj = {
-    [name]: value
-};
-const fieldSchema = {
-    [name]: schema[name]
-};
+  const validateProperty = (name, value) => {
+    const obj = {
+      [name]: value
+    };
+    const fieldSchema = {
+      [name]: schema[name]
+    };
     let errors = customValidator(obj, fieldSchema)
-     setError({...error,[name]:errors[name]})
-   
-    }
-
-
-
-
+    setError({ ...error, [name]: errors[name] })
+  }
 
   return (
     <div id="login">
-
       <div className="container">
         <div id="login-row" className="row justify-content-center align-items-center">
           <div id="login-column" className="col-md-6">
             <div id="login-box login-height" className="col-md-12">
               <form id="login-form" className="form" action="" method="post">
                 <h3 className="text-center text-info">Login</h3>
-
                 <div className="form-group">
                   <label htmlFor="username" className="text-info">Username:</label><br />
                   <input type="text" name="username" id="username" className="form-control"
-                    value={email}
-                    onBlur={()=>validateProperty('email',email)}
+                    value={email} onBlur={() => validateProperty('email', email)}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                   <div class="invalid">
-                    {error?.email?.msg}
-                                  </div>
+                    {error?.email}
+                  </div>
                 </div>
                 <div className="form-group">
                   <label htmlFor="password" className="text-info">Password:</label><br />
                   <input type="text" name="password" id="password" className="form-control"
-                    value={password}
-                   onBlur={()=>validateProperty('password',password)}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  />
-                  <span className="invalid">{error?.password?.msg}</span>
+                    value={password} onBlur={() => validateProperty('password', password)}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+                  <span className="invalid">{error?.password}</span>
                 </div>
                 <div className="form-group">
                   <label htmlFor="remember-me" className="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
                   <input type="button" name="submit" className="btn btn-info btn-md" value="submit" onClick={() => submitForm()} ></input>
-                  <span></span>
                 </div>
                 <div id="register-link" className="text-right">
-                  <a className="text-info" onClick={() => history.push('/signup')}
-                  >Register here</a>
+                  <a className="text-info" onClick={() => history.push('/signup')}>Register here</a>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-
-  )
+    </div>)
 }
 export default withRouter(Login)
-
-
-// import { customValidator } from "../utils/formValidation"
-// import joi from "joi-browser"
-// var schema = joi.object().keys({
-//   username: joi.string().required().error(() => {
-//     return {
-//       message: 'Challenge type is required.',
-//     }
-//   }),
-//   password: joi.string().min(8).required().error(() => {
-//     return {
-//       message: 'good type is required.',
-//     }
-//   }),
-// });
-
-// let errors = customValidator({ username: "", password: "uueg" }, schema)
-
-// alert(JSON.stringify(errors))
-
-
-
-// class Login extends React.Component {
-//   render() {
-//     const {
-//       user: { username, password },
-//       errors, changeHandler, validateHandler 
-//     } = this.props;
-
-//     return(
-//       <div >
-//         <input type="text"
-//           value={username}
-//           onChange={ changeHandler('username') }
-//           onBlur={ validateHandler('username') }
-//         />
-
-//         <span > fkenng </span>
-
-//         <input type="password"
-//           value={password}
-//           onChange={ changeHandler('password') }
-//           onBlur={ validateHandler('password') }
-//         />
-
-//         <span > { errors.password } </span>
-
-//         <input type="Submit" value="Sign In" />
-//       </div>
-//     );
-//   }
-// }
-
-
