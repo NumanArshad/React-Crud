@@ -14,7 +14,7 @@ export const createPost=(postText)=>dispatch=>{
     {text:postText} ) 
     .then(
       res=>{
-        if(res.status==200){
+        if(res.status===200){
           dispatch(fetchAllPosts())
       }
       })
@@ -26,7 +26,7 @@ export const getSinglePost=(postId)=>dispatch=>{
   axiosIntance.get('/posts/'+postId )
   .then(
     res=>{
-      if(res.status==200){
+      if(res.status===200){
         dispatch({type:GET_SINGLE_POST,payload:res.data})  
   
       }
@@ -39,7 +39,7 @@ export const deletePost=(postId)=>dispatch=>{
   axiosIntance.delete('/posts/'+postId)
   .then(
     res=>{
-      if(res.status==200){
+      if(res.status===200){
      dispatch(fetchAllPosts())}
     })
    

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, Col, Row ,Spinner} from "react-bootstrap"
+import { Form, Button, Spinner} from "react-bootstrap"
 import  axiosIntance from "../../utils/configInterceptor"
 const CreateEditProfile = () => {
     const [formData, handleData] = useState({ handle: '', status: 'active', skills: [] })
@@ -11,8 +11,8 @@ const CreateEditProfile = () => {
 
     const handleSkills = (newSkill) => {
         let allSkills = skills
-        if (allSkills.find((sk) => sk == newSkill) !== undefined) {
-            allSkills = allSkills.filter((sk) => sk != newSkill)
+        if (allSkills.find((sk) => sk === newSkill) !== undefined) {
+            allSkills = allSkills.filter((sk) => sk !== newSkill)
         }
         else {
             allSkills = [...allSkills, newSkill]

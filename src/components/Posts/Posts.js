@@ -10,7 +10,7 @@ const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, s
     const [isOpen, setTrigger] = useState(false)
     useEffect(() => {
         fetchAllPosts()
-    }, [])
+    }, [fetchAllPosts])
 
     const triggerModal = () => {
         setTrigger(isOpen ? false : true)

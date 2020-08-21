@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import '../index.css'
+// import '../index.css'
 import joi from "joi-browser"
 import { signup } from "../actions/authActions"
 import { customValidator } from "../utils/formValidation"

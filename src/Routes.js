@@ -9,7 +9,7 @@ import NotFound from "./common/NotFound"
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} render={(props) => {
 
-        return (localStorage.getItem('name') ?
+        return (!localStorage.getItem('name') ?
             <><Header {...props} />
                 <Component {...props} /></>
             : <Redirect to="/login" />)

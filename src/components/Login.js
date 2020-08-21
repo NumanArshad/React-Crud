@@ -4,6 +4,7 @@ import joi from "joi-browser"
 import { login } from "../actions/authActions"
 import { customValidator } from "../utils/formValidation"
 import { useSelector } from "react-redux"
+import "../index.css"
 
 const Login = ({ history }) => {
   const [formData, setFormData] = useState({ email: '', password: '' })
@@ -23,7 +24,7 @@ const Login = ({ history }) => {
     }),
     password: joi.string().min(6).required().error(() => {
       return {
-        message: 'password is required.',
+        message: 'password length must be atleast 6.',
       }
     }),
   };
