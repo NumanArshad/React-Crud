@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from 'react'
-// import '../index.css'
 import joi from "joi-browser"
 import { signup } from "../actions/authActions"
 import { customValidator } from "../utils/formValidation"
 import { useSelector } from "react-redux"
+import {Helmet} from "react-helmet"
+
 const SignUp = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' })
     const [error, setError] = useState({})
     const { name, email, password } = formData
+
     const schema = {
         name: joi.string().required().error(() => {
             return {
@@ -61,8 +63,13 @@ const SignUp = () => {
         setError(customError)
     }, [customError])
 
+    const {loading}=useSelector(state=>state.loadingReducer)
+
     return (
         <div id="login">
+        <Helmet>
+          <title>SignUp | Crud App</title>
+        </Helmet>
             <div className="container">
                 <div id="login-row" className="row justify-content-center align-items-center">
                     <div id="login-column" className="col-md-6">
@@ -99,11 +106,10 @@ const SignUp = () => {
                                     <div class="invalid">
                                         {error?.password}
                                     </div>
-                                    <div className="invalid-feedback">kfnj</div>
-                                </div>
+                                    </div>
                                 <div className="form-group">
                                     <label htmlFor="remember-me" className="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
-                                    <input type="button" name="submit" className="btn btn-info btn-md" value="submit" onClick={() => submitForm()} />
+                                    <input type="button" name="submit" className="btn btn-info btn-md" value={loading? "SignUp processing...":'SignUp'} onClick={() => submitForm()} />
                                 </div>
                             </form>
                         </div>

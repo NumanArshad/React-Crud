@@ -1,48 +1,47 @@
-import {GET_ALL_POSTS,GET_SINGLE_POST} from '../utils/types'
+import { GET_ALL_POSTS, GET_SINGLE_POST } from '../utils/types'
 import axiosIntance from "../utils/configInterceptor"
-import axios from "axios"
-export const fetchAllPosts=()=>dispatch=>{
+import toast from '../utils/toast'
+
+export const fetchAllPosts = () => dispatch => {
   axiosIntance.get('/posts')
-   .then(res=>{ 
- dispatch({type:GET_ALL_POSTS,payload:res.data})  
-
-   })
+    .then(res => {
+      dispatch({ type: GET_ALL_POSTS, payload: res.data })
+    })
 }
 
-export const createPost=(postText)=>dispatch=>{
-     axiosIntance.post('/posts',
-    {text:postText} ) 
+export const createPost = (postText) => dispatch => {
+  axiosIntance.post('/posts',
+    { text: postText })
     .then(
-      res=>{
-        if(res.status===200){
+      res => {
+        if (res.status === 200) {
+          toast.success("Post Created Successfully")
           dispatch(fetchAllPosts())
-      }
+        }
       })
-     
 }
 
-export const getSinglePost=(postId)=>dispatch=>{
- 
-  axiosIntance.get('/posts/'+postId )
-  .then(
-    res=>{
-      if(res.status===200){
-        dispatch({type:GET_SINGLE_POST,payload:res.data})  
-  
-      }
-    })
-   
+export const getSinglePost = (postId) => dispatch => {
+  axiosIntance.get('/posts/' + postId)
+    .then(
+      res => {
+        if (res.status === 200) {
+          dispatch({ type: GET_SINGLE_POST, payload: res.data })
+        }
+      })
+
 }
 
+export const deletePost = (postId) => dispatch => {
+  axiosIntance.delete('/posts/' + postId)
+    .then(
+      res => {
+        if (res.status === 200) {
+          toast.success("Post Deleted Successfully")
+          dispatch(fetchAllPosts())
+        }
+      })
 
-export const deletePost=(postId)=>dispatch=>{
-  axiosIntance.delete('/posts/'+postId)
-  .then(
-    res=>{
-      if(res.status===200){
-     dispatch(fetchAllPosts())}
-    })
-   
 }
 
 

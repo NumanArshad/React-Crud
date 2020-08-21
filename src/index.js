@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
+import './index.css';
 // import App from './App';
 import DynamicRoute from './Routes'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import store from './store'
 import * as serviceWorker from './serviceWorker';
 
-const RootComponent=()=>{
+const RootComponent = () => {
   return (<Provider store={store}>
-  <DynamicRoute />
+    <DynamicRoute />
   </Provider>)
 }
 

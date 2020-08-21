@@ -1,9 +1,10 @@
 import React from 'react'
-import { Spinner} from 'react-bootstrap'
-
-const LoaderSpinner=()=>{
-    return(<Spinner animation="border" role="status">
-    <span className="sr-only">Loading...</span>
-  </Spinner>)
+const LoaderSpinner = () => {
+  return (
+    <div id="overlay" style={{ display: "visible" }}>
+      <div class="spinner"></div>
+      <br />
+      Loading...
+</div>)
 }
 export default LoaderSpinner

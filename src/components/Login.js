@@ -4,13 +4,14 @@ import joi from "joi-browser"
 import { login } from "../actions/authActions"
 import { customValidator } from "../utils/formValidation"
 import { useSelector } from "react-redux"
-import "../index.css"
+import {Helmet} from "react-helmet"
 
 const Login = ({ history }) => {
   const [formData, setFormData] = useState({ email: '', password: '' })
   const { email, password } = formData
   const [error, setError] = useState({})
   const { errors: customError } = useSelector(state => state.errorReducer)
+
 
   useEffect(() => {
     setError(customError)
@@ -28,6 +29,8 @@ const Login = ({ history }) => {
       }
     }),
   };
+
+  const {loading}=useSelector(state=>state.loadingReducer)
 
   const submitForm = () => {
     if (validateForm()) {
@@ -57,9 +60,16 @@ const Login = ({ history }) => {
     let errors = customValidator(obj, fieldSchema)
     setError({ ...error, [name]: errors[name] })
   }
+  const signup=(event)=>{
+    event.preventDefault()
+    history.push('/signup')
+  }
 
   return (
     <div id="login">
+    <Helmet>
+          <title>Login | Crud App</title>
+        </Helmet>
       <div className="container">
         <div id="login-row" className="row justify-content-center align-items-center">
           <div id="login-column" className="col-md-6">
@@ -75,19 +85,20 @@ const Login = ({ history }) => {
                     {error?.email}
                   </div>
                 </div>
+
                 <div className="form-group">
                   <label htmlFor="password" className="text-info">Password:</label><br />
-                  <input type="text" name="password" id="password" className="form-control"
+                  <input type="password" name="password" id="password" className="form-control"
                     value={password} onBlur={() => validateProperty('password', password)}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
                   <span className="invalid">{error?.password}</span>
                 </div>
                 <div className="form-group">
                   <label htmlFor="remember-me" className="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
-                  <input type="button" name="submit" className="btn btn-info btn-md" value="submit" onClick={() => submitForm()} ></input>
+                  <input type="button" name="submit" className="btn btn-info btn-md" value={loading? "Login processing...":'Login'} onClick={() => submitForm()} />
                 </div>
                 <div id="register-link" className="text-right">
-                  <a className="text-info" onClick={() => history.push('/signup')}>Register here</a>
+                  <a className="text-info" href="/" onClick={(event) => signup(event)}>Register here</a>
                 </div>
               </form>
             </div>
