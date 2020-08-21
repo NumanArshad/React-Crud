@@ -31,7 +31,7 @@ const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, s
     return (
         <div className="container">
             <div className="my-4">
-                <Button variant="primary" onClick={triggerCreate} disabled={loading}>
+                <Button variant="primary" onClick={triggerCreate}>
                     Create New Post
                </Button>
                 <CreateEditPost show={isOpen} handleClose={triggerModal} singlePost={singlePost} createPost={createPost} title={title} /></div>
