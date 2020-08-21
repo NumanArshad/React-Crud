@@ -40,7 +40,6 @@ axiosIntance.interceptors.response.use((response) => {
         store.dispatch(seterror(error.response))
     }
     store.dispatch({ type: STOP_LOADING })
-    //store.dispatch(clearerror())
     return Promise.reject(error)
 })
 export default axiosIntance

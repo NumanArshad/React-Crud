@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import joi from "joi-browser"
 import { customValidator } from "../../utils/formValidation"
+import moment from 'moment'
+
 
 const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) => {
   const [postText, handlePostText] = useState('')
@@ -16,12 +18,12 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
 
   useEffect(() => {
     setShow(show)
-    handlePostText('')
-    if (Object.entries(singlePost).length > 0) {
-      setShow(!show)
-      handlePostText(singlePost.text)
+  
+  handlePostText(singlePost.text)
+    if (title==='Create') {
+      handlePostText('')
     }
-  }, [show, singlePost])
+  }, [show])
 
   const schema = {
     postText: joi.string().min(10).max(300).required().error(() => {
@@ -55,12 +57,25 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
               <Form.Label>post message</Form.Label>
               <Form.Control type="text" placeholder="Enter post text"
                 value={postText}
+                disabled={title==='View'}
                 onChange={(e) => handlePostText(e.target.value)} />
               <span className="invalid">{error?.postText}</span>
             </Form.Group>
-            <Button variant="primary" onClick={handleSubmit}>
+            {title==='View' &&  <Form.Group controlId="formBasicEmail">
+              <Form.Label>post date</Form.Label>
+              <Form.Control type="text" placeholder="Enter post text"
+                value={moment(singlePost.date).format('MMMM Do YYYY h:mm:ss a')}
+                disabled={true}
+                />
+              <span className="invalid">{error?.postText}</span>
+            </Form.Group>}
+           
+           {title!=='View' && 
+           <Button variant="primary" onClick={handleSubmit}>
               Submit
        </Button>
+           }
+            
           </Form>
         </Modal.Body>
         <Modal.Footer>

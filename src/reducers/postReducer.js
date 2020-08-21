@@ -1,4 +1,4 @@
-import { GET_ALL_POSTS, GET_SINGLE_POST,CLEAR_SINGLE_POST } from '../utils/types'
+import { GET_ALL_POSTS, GET_SINGLE_POST } from '../utils/types'
 const initialState = {
     posts: [],
     single_post: {}
@@ -10,8 +10,6 @@ export default function (state = initialState, actions) {
             return { ...state, posts: actions.payload }
         case GET_SINGLE_POST:
             return { ...state, single_post: actions.payload }
-        case CLEAR_SINGLE_POST:
-            return { ...state, single_post: {} }
         default:
             return state;
     }

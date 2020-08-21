@@ -1,4 +1,4 @@
-import { SET_ERROR, CLEAR_ERROR } from '../utils/types'
+import { SET_ERROR } from '../utils/types'
 import { logout } from "./authActions"
 
 export const seterror = (error_response) => dispatch => {
@@ -10,7 +10,4 @@ export const seterror = (error_response) => dispatch => {
     }
 }
 
-export const clearerror = () => dispatch => {
-    dispatch({ type: CLEAR_ERROR})
-}
 

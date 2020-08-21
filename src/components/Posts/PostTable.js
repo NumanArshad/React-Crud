@@ -97,7 +97,7 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
                                 <Dropdown>
                                     <Dropdown.Toggle id="dropdown-basic" disabled={localStorage.getItem('id') !== user}>Actions</Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item onClick={() => getSinglePost(_id)}>Edit</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => getSinglePost(_id)}>View</Dropdown.Item>
                                         <Dropdown.Item onClick={() => triggerModal(_id)}>Delete</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
