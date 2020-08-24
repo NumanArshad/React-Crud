@@ -8,6 +8,7 @@ cursor: pointer;
 .invalid{
   color:red
 }
+
 .pagination {
   margin: 15px auto;
   display: flex;

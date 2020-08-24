@@ -18,12 +18,12 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
 
   useEffect(() => {
     setShow(show)
-  
+  //alert("called")
   handlePostText(singlePost.text)
     if (title==='Create') {
       handlePostText('')
     }
-  }, [show])
+  }, [show,title])
 
   const schema = {
     postText: joi.string().min(10).max(300).required().error(() => {

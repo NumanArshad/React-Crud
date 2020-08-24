@@ -87,8 +87,9 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
                 </thead>
                 <tbody>
                     {loading && <tr ><td colSpan="5" className="text-center"> ...loading</td></tr>}
-                    {!loading && sliceData ?.map(({ _id, text, user, date }) => {
-                        return (<tr>
+                    {!loading && sliceData.length===0  && <tr ><td colSpan="5" className="text-center"> No Record To Display</td></tr>}
+                    {!loading && sliceData?.map(({ _id, text, user, date }) => {
+                        return (<tr key={_id}>
                             <td>{_id}</td>
                             <td>{text}</td>
                             <td>{moment(date).format('MMMM Do YYYY h:mm:ss a')}</td>
@@ -107,8 +108,7 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
                 </tbody>
                 <span>{loading && <LoaderSpinner />}</span>
             </Table>
-
-            {!loading && <ReactPaginate
+            {postsList.length>paginateObject.perPage &&   <ReactPaginate
                 previousLabel={"prev"}
                 nextLabel={"next"}
                 breakLabel={"..."}
