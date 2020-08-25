@@ -7,7 +7,7 @@ import toast from "../../utils/toast"
 import { useSelector } from "react-redux"
 import LoaderSpinner from "../../common/Spinner"
 import {Helmet} from "react-helmet"
-
+import MapView from "../MapView"
 const CreateEditProfile = () => {
     const [formData, handleData] = useState({ handle: '', status: '', skills: [] })
     const { handle, status, skills } = formData
@@ -87,6 +87,7 @@ const CreateEditProfile = () => {
          <Helmet>
           <title>Manage Profile | Crud App</title>
         </Helmet>
+    
             {loading && <LoaderSpinner />}
             <Form className="col-6 mx-auto">
                 <Form.Group controlId="formBasicEmail">
@@ -153,6 +154,7 @@ const CreateEditProfile = () => {
             <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>
+            <MapView />
         </div>
     )
 

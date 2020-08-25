@@ -16,14 +16,10 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
     }
   }
 
-  useEffect(() => {
-    setShow(show)
-  //alert("called")
-  handlePostText(singlePost.text)
-    if (title==='Create') {
-      handlePostText('')
-    }
-  }, [show,title])
+  // useEffect(() => {
+  //   setShow(show)
+ 
+  // }, [show])
 
   const schema = {
     postText: joi.string().min(10).max(300).required().error(() => {
@@ -47,7 +43,7 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
 
   return (
     <>
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -56,7 +52,7 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>post message</Form.Label>
               <Form.Control type="text" placeholder="Enter post text"
-                value={postText}
+                value={title=="View" ? singlePost?.text : postText}
                 disabled={title==='View'}
                 onChange={(e) => handlePostText(e.target.value)} />
               <span className="invalid">{error?.postText}</span>

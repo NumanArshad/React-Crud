@@ -36,7 +36,7 @@ axiosIntance.interceptors.response.use((response) => {
         toast.error("Unexpected error")
     }
     else {
-        toast.error(error)
+      //  toast.error(error)
         store.dispatch(seterror(error.response))
     }
     store.dispatch({ type: STOP_LOADING })

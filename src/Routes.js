@@ -6,6 +6,13 @@ import Posts from './components/Posts/Posts'
 import CreateEditProfile from './components/Profiles/CreateEditProfile'
 import Header from "./common/header"
 import NotFound from "./common/NotFound"
+import Calculator from "./components/Calculator"
+import MapView from "./components/MapView"
+
+import createBrowserHistory from 'history/createBrowserHistory'
+
+export const history = createBrowserHistory()
+
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} render={(props) => {
 
@@ -20,13 +27,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
 const DynamicRoute = () => {
     return (
-        <Router>
+        <Router history={history}>
             <Switch>
                 <Route path="/login" component={Login} exact />
                 <Route path="/signup" component={SignUp} exact />
                 <PrivateRoute path="/dashboard" exact component={Posts} />
+                <Route path="/calc" exact component={Calculator} />
                 <PrivateRoute path="/profiles/new" exact component={CreateEditProfile} />
                 <Redirect from="/" to="/dashboard" />
+                
                 <Route path="*" component={NotFound} />
             </Switch>
 
