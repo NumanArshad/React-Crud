@@ -205,3 +205,14 @@ button:active {
 .calculator .operator-keys {
   background:  linear-gradient(to bottom, rgba(252,156,23,1) 0%, rgba(247,126,27,1) 100%);
 }
+
+
+
+.droptarget{
+float:left;
+min-width:100;
+min-height:100; 
+margin:20;
+padding:10; 
+border:1px solid black
+}

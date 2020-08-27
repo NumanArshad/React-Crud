@@ -15,27 +15,30 @@ const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, s
     useEffect(() => {
         if(Object.entries(singlePost).length > 0){
             setTitle('View')
-            triggerModal()
+          //  triggerModal()
+          setTrigger(true)
         }
     }, [singlePost])
 
-    const triggerModal = () => {
+    const triggerModal =() => {
         setTrigger(isOpen ? false : true)
+      
     }
 
-    const triggerCreate=()=>{
+    const triggerCreate=()=>{ 
         setTitle('Create')
         triggerModal()
     }
 
     return (
         <div className="container">
-            <div className="my-4">
-                <Button variant="primary" onClick={triggerCreate}>
+            <div className="my-4"></div>
+                <Button variant="primary" className="my-4" onClick={triggerCreate}>
                     Create New Post
                </Button>
-                <CreateEditPost show={isOpen} handleClose={triggerModal} singlePost={singlePost} createPost={createPost} title={title} /></div>
-            <PostTable postsList={postsList} loading={loading} getSinglePost={getSinglePost} deletePost={deletePost} />
+                  <PostTable postsList={postsList} loading={loading} getSinglePost={getSinglePost} deletePost={deletePost} />
+                <CreateEditPost show={isOpen} handleClose={triggerModal} singlePost={singlePost} createPost={createPost} title={title} />
+         
         </div>
     )
 }

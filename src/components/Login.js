@@ -43,6 +43,7 @@ const Login = ({ history }) => {
     setError({})
     // console.dir(schema)
     let errors = customValidator({ email: email, password: password }, schema)
+    console.log(errors)
     if (Object.keys(errors).length > 0) {
       setError(errors)
       isValidated = false

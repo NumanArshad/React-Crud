@@ -1,14 +1,12 @@
 import joi from "joi-browser"
 
 export const customValidator = (data, schema) => {
-    const result = joi.validate(data, schema, { abortEarly: false })
-    const usefulErrors = {};
+    let result = joi.validate(data, schema, { abortEarly: false })
+    let usefulErrors = {};
     if (result.error) {
-        result.error.details.map((error) => {
-            if (!usefulErrors.hasOwnProperty(error.path.join('_'))) {
-                usefulErrors[error.path.join('_')] = error.message
-            }
-        });
+        usefulErrors = result.error.details.reduce((formatError, error) => ({
+            ...formatError, [error.path]: error.message
+   }), {});
     }
     return usefulErrors
 }

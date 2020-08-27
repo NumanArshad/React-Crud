@@ -1,110 +1,62 @@
-//  import React from "react"
-//  // import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc'
-// const { sortableContainer, sortableElement, sortableHandle } = ReactSortableHoc
-// const DraggableContainer = sortableContainer(({ children }) => children)
-// const DraggableElement = sortableElement(({ children }) => children)
-// const DraggableHandle = sortableHandle(({ children }) => children)
+ import React, { useEffect } from "react"
 
-// const Handle = styled.div`
-//   flex: none;
-//   width: 7.5px;
-//   height: 100%;
 
-//   &::before {
-//     content: '';
-//     border-left: 4px dotted #ccc;
-//     display: block;
-//     height: 20px;
-//     margin: 15px 3px;
-//   }
+ const Draggable=()=>{
+     const [dragStatus,setDragStatus]=React.useState('')
+     let node=React.useRef('')
+     useEffect(()=>{
+         document.addEventListener("dragstart",function(event){
+            console.log(event.target.id)
+           //  setDragStatus(event.target.id)
+           event.dataTransfer.setData('text',event.target.id)
+            
+         })
+         document.addEventListener("drag",function(event){
+           console.log("being dragged")
+        })
+        document.addEventListener("dragover",function(event){
+            console.log("going tp drop")
+            event.preventDefault()
+        })
+        document.addEventListener("drop",function(event){
+            event.preventDefault()
+           // console.log("at last dropped"+event.target.className)
+           // if(event.target.className=="droptarget"){
+             
+          let dragElement= event.target.replaceWith(document.getElementById( event.dataTransfer.getData('text')))
+                event.target.replaceWith(dragElement)
+               // dragElement.replaceWith(event.target)
+           //  }
+        })
 
-//   &:hover::before {
-//     border-color: #888;
-//   }
-// `
+        
+        
+         return(()=>{
+            document.removeEventListener("dragstart",function(event){
+                console.log("drag start")
+            })
+            document.removeEventListener("drag",function(event){
+              console.log("being dragged")
+           })
+           document.removeEventListener("dragover",function(event){
+               console.log("going tp drop")
+           })
+           document.removeEventListener("drop",function(event){
+               console.log("at last dropped")
 
-// const Row = ({ key, index, children, ...rest }) => (
-//   <DraggableElement key={key} index={index}>
-//     <div {...rest}>
-//       <DraggableHandle>
-//         <Handle />
-//       </DraggableHandle>
-//       {children}
-//     </div>
-//   </DraggableElement>
-// )
+           })
+         })
+     }, [])
 
-// const rowProps = ({ rowIndex }) => ({
-//   tagName: Row,
-//   index: rowIndex,
-// })
+     return(<>{dragStatus} being dragged
+     <div className="droptarget"><p  draggable={true} id="dragtarget1" ref={el=>node=el}>1</p>
+     <p  draggable={true} id="dragtarget2" ref={el=>node=el}>2</p>
+     <p  draggable={true} id="dragtarget3" ref={el=>node=el}>3</p>
+     </div>
+     <div className="droptarget" style={{marginLeft:20}}>1</div>
+     <button onClick={()=>console.log(node.id)}>nk</button>
+     </>)
+ }
 
-// class DraggableTable extends React.PureComponent {
-//   state = {
-//     data: this.props.data,
-//   }
 
-//   table = React.createRef()
-
-//   getContainer = () => {
-//     return this.table.current.getDOMNode().querySelector('.BaseTable__body')
-//   }
-
-//   getHelperContainer = () => {
-//     return this.table.current.getDOMNode().querySelector('.BaseTable__table')
-//   }
-
-//   rowProps = args => {
-//     // don't forget to passing the incoming rowProps
-//     const extraProps = callOrReturn(this.props.rowProps)
-//     return {
-//       ...extraProps,
-//       tagName: Row,
-//       index: args.rowIndex,
-//     }
-//   }
-
-//   handleSortEnd = ({ oldIndex, newIndex }) => {
-//     const data = [...this.state.data]
-//     const [removed] = data.splice(oldIndex, 1)
-//     data.splice(newIndex, 0, removed)
-//     this.setState({ data })
-//   }
-
-//   render() {
-//     return (
-//       <DraggableContainer
-//         useDragHandle
-//         getContainer={this.getContainer}
-//         helperContainer={this.getHelperContainer}
-//         onSortEnd={this.handleSortEnd}
-//       >
-//         <Table
-//           {...this.props}
-//           ref={this.table}
-//           data={this.state.data}
-//           fixed={false}
-//           rowProps={this.rowProps}
-//         />
-//       </DraggableContainer>
-//     )
-//   }
-// }
-
-// const Hint = styled.div`
-//   font-size: 16px;
-//   font-weight: 700;
-//   color: #336699;
-//   margin-bottom: 10px;
-// `
-
-// const columns = generateColumns(10)
-// const data = generateData(columns, 200)
-// columns[0].minWidth = 150
-
-// export default () => (
-//   <>
-//     <Hint>Drag the dots, only works in flex mode(fixed=false)</Hint>
-//     <DraggableTable columns={columns} data={data} />
-//   </>
-// )
+ export default Draggable

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import joi from "joi-browser"
 import { customValidator } from "../../utils/formValidation"
@@ -8,7 +8,7 @@ import moment from 'moment'
 const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) => {
   const [postText, handlePostText] = useState('')
   const [error, setError] = useState({})
-  const [showModal, setShow] = useState(show)
+  //const [showModal, setShow] = useState(show)
   const handleSubmit = () => {
     if (validateForm()) {
       createPost(postText)
@@ -52,7 +52,7 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>post message</Form.Label>
               <Form.Control type="text" placeholder="Enter post text"
-                value={title=="View" ? singlePost?.text : postText}
+                value={title==="View" ? singlePost?.text : postText}
                 disabled={title==='View'}
                 onChange={(e) => handlePostText(e.target.value)} />
               <span className="invalid">{error?.postText}</span>

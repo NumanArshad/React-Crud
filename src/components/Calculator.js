@@ -1,10 +1,4 @@
-import React, { useEffect } from "react";
-import { display } from "@material-ui/system";
-// //const PointTarget = ReactPoint.PointTarget
-
-
-
-
+ import React, { useEffect } from "react";
 const Calculator = () => {
 
     const [result, setResult] = React.useState('0')

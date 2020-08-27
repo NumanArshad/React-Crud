@@ -7,8 +7,6 @@ import CreateEditProfile from './components/Profiles/CreateEditProfile'
 import Header from "./common/header"
 import NotFound from "./common/NotFound"
 import Calculator from "./components/Calculator"
-import MapView from "./components/MapView"
-
 import createBrowserHistory from 'history/createBrowserHistory'
 
 export const history = createBrowserHistory()
