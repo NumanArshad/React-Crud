@@ -107,7 +107,7 @@ button:active {
 }
 
 #app {
-  width: 320px;
+  max-width: 320px;
   height: 520px;
   position: relative;
 }
@@ -139,9 +139,10 @@ button:active {
 }
 
 .calculator-display .auto-scaling-text {
-  padding: 0 30px;
+  padding: 0 0px;
   position: absolute;
   right: 0;
+ 
   transform-origin: right;
 }
 

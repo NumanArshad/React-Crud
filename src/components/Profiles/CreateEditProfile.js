@@ -10,11 +10,12 @@ import LoaderSpinner from "../../common/Spinner"
 import { Helmet } from "react-helmet"
 import MapView from "../MapView"
 import Chip from '@material-ui/core/Chip';
-import { TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
+import { TextField} from '@material-ui/core';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 const CreateEditProfile = () => {
-    const [formData, handleData] = useState({ handle: '', status: '', skills: [] })
+    const fixedOptions = [];
+    const [formData, handleData] = useState({ handle: '', status: '', skills: [...fixedOptions] })
     const { handle, status, skills } = formData
     const [error, setError] = useState({})
 
@@ -22,17 +23,7 @@ const CreateEditProfile = () => {
         hitEndPoint({ method: 'get', url: '/profile' })
     }, [])
 
-    const [value2, setValue2] = React.useState('female');
-
-    const handleChange = (event) => {
-        setValue2(event.target.value);
-    };
-
     const { loading } = useSelector(state => state.loadingReducer)
-
-    const fixedOptions = [];
-    const [value, setValue] = React.useState([]);
-
 
     const hitEndPoint = (config) => {
         axiosIntance(config).then((res) => {
@@ -47,22 +38,11 @@ const CreateEditProfile = () => {
     const handleStatus = (status) => {
         handleData({ ...formData, status: status })
     }
-    const handleSkills = (newSkill) => {
-        alert(value)
-        let allSkills = skills
-        if (allSkills.find((sk) => sk === newSkill) !== undefined) {
-            allSkills = allSkills.filter((sk) => sk !== newSkill)
-        }
-        else {
-            allSkills = [...allSkills, newSkill]
-        }
-        handleData({ ...formData, skills: allSkills })
-    }
+
 
     const handleSubmit = () => {
         if (validateForm()) {
-
-            handleData({ handle: '', status: '', skills: [] })
+            handleData({ handle: '', status: '', skills: [...fixedOptions] })
             hitEndPoint({ method: 'post', url: '/profile', data: { handle: handle, status: status, skills: skills.toString() } })
         }
     }
@@ -106,29 +86,14 @@ const CreateEditProfile = () => {
 
             {loading && <LoaderSpinner />}
 
-
-            {/* <FormControl component="fieldset">
-                <FormLabel component="legend">Gender</FormLabel>
-                <RadioGroup aria-label="gender" name="gender1" value={value2} onChange={handleChange}>
-                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                    <FormControlLabel value="other" control={<Radio />} label="Other" />
-                </RadioGroup>
-            </FormControl> */}
             <Form className="col-6 mx-auto">
-                {/* <TextField
-          error={false}
-          id="standard-error-helper-text"
-          label="Handle"
-          defaultValue="Hello World"
-          helperText="Incorrect entry."
-        /> */}
+
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Handle</Form.Label>
                     <Form.Control type="text" placeholder="Enter handle" value={handle} onChange={(e) => handleData({ ...formData, handle: e.target.value })}
                     />
                     <div class="invalid">
-                        {error ?.handle}
+                        {error?.handle}
                     </div>
                 </Form.Group>
                 <Form.Group>
@@ -155,13 +120,14 @@ const CreateEditProfile = () => {
                 <Autocomplete
                     multiple
                     id="fixed-tags-demo"
-                    value={value}
+                    value={skills}
                     onChange={(event, newValue) => {
-                      alert("called")
-                        setValue([
-                          ...value,
-                            ...newValue.filter((option) => value.indexOf(option) === -1),
-                        ]);
+                        handleData({
+                            ...formData, skills: [
+                                ...fixedOptions,
+                                ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
+                            ]
+                        });
                     }}
                     options={top100Films}
                     getOptionLabel={(option) => option}
@@ -169,9 +135,9 @@ const CreateEditProfile = () => {
                         tagValue.map((option, index) => (
                             <Chip
                                 label={option}
-                                onClick={()=>alert("called")}
+                                onClick={() => alert("called")}
                                 {...getTagProps({ index })}
-                               // disabled={value.indexOf(option) !== -1}
+                            // disabled={value.indexOf(option) !== -1}
                             />
                         ))
                     }
@@ -184,11 +150,12 @@ const CreateEditProfile = () => {
                 <Button variant="primary mt-2" onClick={() => handleSubmit()}>
                     Save {loading ? "processing..." : ''}
                 </Button>
-            </Form>
-            <Spinner animation="border" role="status">
+                <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>
-            {/* <MapView /> */}
+            <MapView />
+            </Form>
+           
         </div>
     )
 

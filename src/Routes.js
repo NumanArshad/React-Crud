@@ -14,7 +14,7 @@ export const history = createBrowserHistory()
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} render={(props) => {
 
-        return (!localStorage.getItem('token') ?
+        return (localStorage.getItem('token') ?
             <><Header {...props} />
                 <Component {...props} /></>
             : <Redirect to="/login" />)

@@ -1,129 +1,135 @@
 
 
-import React, { useEffect, useState, forwardRef } from 'react'
-import { Table, Dropdown } from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { Dropdown } from 'react-bootstrap'
 import moment from 'moment'
-
-import ConfirmatioModal from './ConfirmationModal'
 import LoaderSpinner from "../../common/Spinner"
-import { Helmet } from "react-helmet"
-import MUIDataTable from "mui-datatables";
-import Draggable from "./Draggable"
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import DataTable from 'react-data-table-component';
 const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
-  // const columns = [
-  //   {
-  //     name: "_id",
-  //     label: "Id",
-  //     options: {
-  //       filter: true,
-  //       sort: true,
-  //     }
-  //   },
-  //   {
-  //     name: "text",
-  //     label: "Text",
-  //     options: {
-  //       filter: true,
-  //       sort: false,
-  //     }
-  //   },
-  //   {
-  //     name: "date",
-  //     label: "Date",
-  //     options: {
-  //       filter: true,
-  //       sort: true,
-  //       customBodyRender: (value, tableMeta, updateValue) => (
-  //         <span>{moment(value).format('MMMM Do YYYY h:mm:ss a')}</span>)
 
-  //     }
-  //   },
-  //   {
-  //     name: "user",
-  //     label: "User",
-  //     options: {
-  //       filter: true,
-  //       sort: true,
-  //     }
-  //   },
-  //   {
-  //     name: "actions",
-  //     label: "Action",
-  //     options: {
-  //       customBodyRender: (value, { rowData: [first, ...rest] }, updateValue) => (
-  //         <Dropdown>
-  //           <Dropdown.Toggle id="dropdown-basic">Actions</Dropdown.Toggle>
-  //           <Dropdown.Menu>
-  //             <Dropdown.Item onClick={() => getSinglePost(first)}>View</Dropdown.Item>
-  //             <Dropdown.Item onClick={() => deletePost(first)} disabled={rest[2] !== localStorage.getItem('id')}>Delete</Dropdown.Item>
-  //           </Dropdown.Menu>
-  //         </Dropdown>)
-
-  //     }
-  //   },
-  // ];
 
   // const columns = [
   //   {
-  //     name: "id",
-  //     label: "Id",
-  //     options: {
-  //       filter: true,
-  //       sort: true,
-  //     }
+  //     name: 'Id',
+  //     selector: 'Id',
+  //     sortable: true,
+  //     //cell: row => <div><div style={{ fontWeight: 'bold' }}>{row.title}</div>{row.summary}</div>,
   //   },
   //   {
-  //     name: "email",
-  //     label: "Email",
-  //     options: {
-  //       filter: true,
-  //       sort: false,
-  //     }
-  //   },
-  //   {
-  //     name: "first_name",
-  //     label: "First",
-  //     options: {
-  //       filter: true,
-  //       sort: true,
-  //       // customBodyRender: (value, tableMeta, updateValue) => (
-  //       //   <span>{moment(value).format('MMMM Do YYYY h:mm:ss a')}</span>)
+  //     name: 'email',
+  //     selector: 'email',
+  //     sortable: true,
 
-  //     }
   //   },
   //   {
-  //     name: "last_name",
-  //     label: "Last",
-  //     options: {
-  //       filter: true,
-  //       sort: true,
-  //     }
+  //     name: 'first_name',
+  //     selector: 'first_name',
+  //     sortable: true,
+  //     cell: row =>
+  //       <span>{moment(row.date).format('MMMM Do YYYY h:mm:ss a')}</span>
   //   },
   //   {
-  //     name: "actions",
-  //     label: "Action",
-  //     options: {
-  //       customBodyRender: (value, { rowData: [first, ...rest] }, updateValue) => (
-  //         <Dropdown>
-  //           <Dropdown.Toggle id="dropdown-basic">Actions</Dropdown.Toggle>
-  //           <Dropdown.Menu>
-  //             <Dropdown.Item onClick={() => alert(first)}>View</Dropdown.Item>
-  //             <Dropdown.Item onClick={() => alert(first)} >Delete</Dropdown.Item>
-  //           </Dropdown.Menu>
-  //         </Dropdown>)
+  //     name: 'last_name',
+  //     selector: 'last_name',
+  //     sortable: true,
+  //     cell: row =>
+  //       (<Dropdown>
+  //         <Dropdown.Toggle id="dropdown-basic">Actions</Dropdown.Toggle>
+  //         <Dropdown.Menu>
+  //           <Dropdown.Item onClick={() => getSinglePost(row._id)}>View</Dropdown.Item>
+  //           <Dropdown.Item onClick={() => deletePost(row._id)} disabled={row.user !== localStorage.getItem('id')}>Delete</Dropdown.Item>
+  //         </Dropdown.Menu>
+  //       </Dropdown>)
 
-  //     }
   //   },
   // ];
+
+  const columns = [
+    {
+      name: 'Id',
+      selector: '_id',
+      sortable: true,
+      //cell: row => <div><div style={{ fontWeight: 'bold' }}>{row.title}</div>{row.summary}</div>,
+    },
+    {
+      name: 'Text',
+      selector: 'text',
+      sortable: true,
+
+    },
+    {
+      name: 'date',
+      selector: 'Date',
+      sortable: true,
+      cell: row =>
+        <span>{moment(row.date).format('MMMM Do YYYY h:mm:ss a')}</span>
+    },
+    {
+      name: 'User',
+      selector: 'user',
+      sortable: true,
+      cell: row =>
+        (<Dropdown>
+          <Dropdown.Toggle id="dropdown-basic">Actions</Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => getSinglePost(row._id)}>View</Dropdown.Item>
+            <Dropdown.Item onClick={() => deletePost(row._id)} disabled={row.user !== localStorage.getItem('id')}>Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>)
+
+    },
+  ];
+
+  const sortIcon = <ArrowDownward />;
+
+  useEffect(() => {
+
+    let rows = document.getElementsByClassName("sc-fzoLsD")
+    for (let row of rows) {
+      row.draggable = true
+    }
+    document.addEventListener("dragstart", function (event) {
+      event.dataTransfer.setData('dragElement', `${event.target.id} ${event.clientY}`)
+    })
+    document.addEventListener("drag", function (event) {
+      console.log("being dragged")
+    })
+    document.addEventListener("dragover", function (event) {
+      event.preventDefault()
+      console.log(event.target.parentElement)
+    })
+    document.addEventListener("drop", function (event) {
+      const [dragId, Y] = event.dataTransfer.getData('dragElement').split(' ')
+      const sourceElement = document.getElementById(dragId)
+      const targetElement = event.target.parentNode
+
+      if (!sourceElement || !targetElement) return;
+
+      if (targetElement.parentElement == sourceElement.parentElement) {
+        if (+Y < event.clientY) {
+          targetElement.parentElement.insertBefore(sourceElement, targetElement.nextSibling)
+        }
+        else {
+          targetElement.parentElement.insertBefore(sourceElement, targetElement)
+        }
+
+      }
+    }, [postsList])
+
+
+  })
+
 
   // const options = {
   //   filter: true,
   //   filterType: 'dropdown',
   //   //responsive: this.state.vertical ? 'vertical' : 'standard',
-  //   // fixedHeader: false,
+  //  fixedHeader: false,
   //   // fixedSelectColumn: false,
   //   rowHover: true,
-  //   selectableRows: "none",
+
+  //   //selectableRows: "none",
   //   // draggableColumns: {
   //   //   enabled: true
   //   // },
@@ -157,6 +163,15 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
   //     },
 
   //   },
+  //   setRowProps: (row, dataIndex, rowIndex) => {
+  //     return {
+  //       // className: clsx({
+  //       //   [this.props.classes.BusinessAnalystRow]: row[1] === 'Business Analyst',
+  //       //   [this.props.classes.GreyLine]: rowIndex % 2 === 0 && row[1] !== 'Business Analyst',
+  //       // }),
+  //       style: { cursor: 'pointer' },
+  //     };
+  //   },
 
   // };
 
@@ -164,34 +179,21 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
 
   return (
     <>
-    <Draggable/>
-      {/* <span>{loading && <LoaderSpinner />}</span>
-      <MUIDataTable
+      {/* <Draggable/> */}
+      <span>{loading && <LoaderSpinner />}</span>
+
+      <DataTable
+        striped={true}
         columns={columns}
+        pagination
+        sortIcon={sortIcon}
         data={postsList}
-        options={options}
-      /> */}
-      </>
+
+
+      />
+    </>
   );
 
 }
 
-// class PostTable extends React.Component {
-//   render() {
-//     return (
-//       <DataTable
-//         //  title="Arnold Movies"
-//         columns={columns}
-//         data={data}
-//         sortIcon={sortIcon}
-//         striped={true}
-//         //  dense={true}
-//         //   selectableRows
-//         pagination
-//       // selectableRowsComponent={Checkbox} // Pass the function only
-//       // selectableRowsComponentProps={selectProps}
-//       />
-//     )
-//   }
-// };
 export default PostTable

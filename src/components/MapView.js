@@ -3,7 +3,7 @@ import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
 export class MapView extends Component {
   render() {
     return (
-      <Map google={this.props.google} zoom={14}   style={{width: '50%',marginTop:20, height: '50%'}}>
+      <Map google={this.props.google} zoom={14}   style={{marginTop:20}}>
  
       <Marker onClick={this.onMarkerClick}
               name={'Current location'} />

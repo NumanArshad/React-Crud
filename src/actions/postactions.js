@@ -4,8 +4,10 @@ import toast from '../utils/toast'
 import axios from "axios"
 export const fetchAllPosts = () => dispatch => {
   axios.get('https://reqres.in/api/users')
+  axiosIntance.get('/posts')
+
     .then(res => {
-      dispatch({ type: GET_ALL_POSTS, payload: res.data.data })
+      dispatch({ type: GET_ALL_POSTS, payload: res.data })
     })
 }
 

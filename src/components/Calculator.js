@@ -1,86 +1,98 @@
- import React, { useEffect } from "react";
+import React, { useEffect } from "react";
+import { throws } from "assert";
 const Calculator = () => {
 
-    const [result, setResult] = React.useState('0')
+    const [result, setResult] = React.useState('')
     const [prev, setPrev] = React.useState({ vl: "", op: "" })
     const [displayValues] = React.useState(['AC', 'C', '%', '0', '●', '1', '2', '3', '4', '5', '6', '7', '8', '9', '÷', 'x', '*', '-', '+', '='])
-    const [disallowOperator, setAllowOperator] = React.useState(['*', '/', '%', '='])
-    const [scale,setAutoScale]=React.useState(1)
+    const [disallowOperator, setAllowOperator] = React.useState(['*', '/', '%', '=', '0'])
+    const [scale, setAutoScale] = React.useState(1)
+    let node = React.useRef('')
 
     useEffect(() => {
-      //  console.log(node.parentNode.offsetWidth /node.offsetWidth)
-        document.addEventListener('keyup', (e) => {
+        document.addEventListener('keydown', (e) => {
 
-            // handleClick(e.key)
+       //  handleClick(e.key)
         })
-        return () => {
-            document.removeEventListener('keyup', (e) => {
+        // return () => {
+        //     document.removeEventListener('keydown', (e) => {
 
-                //   handleClick(e.key)
-            })
-        }
+        //           handleClick(e.key)
+        //     })
+        // }
     })
-    
-    let node=React.useRef(null)
 
-    const handleClick = (id) => {
-        console.log(node.parentNode.offsetWidth)
-        console.log(node.parentNode.offsetWidth /node.offsetWidth)
-        console.log(node.parentNode.offsetWidth /node.offsetWidth)
-       const actualScale=node.parentNode.offsetWidth /node.offsetWidth
-        if(actualScale<1){
+   
+
+    const handleClick = (keyPressed) => {
+
+        const actualScale = node.parentNode.offsetWidth / node.offsetWidth
+        if (actualScale < 1) {
             setAutoScale(actualScale)
         }
-        else if(scale<1){
+        else if (scale < 1) {
             setAutoScale(1)
         }
-       // setAutoScale()
-        let last = result.slice(-1)
-        let invalid = false
-        if (disallowOperator.find((op) => op == id) && result == "") {  //if operator is invalid (*,/,%,=)
-            console.log('invalid')
-        }
-        else if (isNaN(id) && (isNaN(last) && last !== "*")) {  //if current and prev are both operator
-            console.log('invalid')
-        }
 
-        else {
-            if (id == "=") {
-                alert(result)
+        let last = result.slice(-1)
+
+        if (handleValidateInput(keyPressed, last)) {
+            if (keyPressed == "=") {
+             
                 if (!prev.vl) {
                     setPrev({ vl: last, op: result.slice(-2, -1) })
                 }
                 applyOperation()
                 return;
             }
-            else if (id !== "=" && isNaN(id)) {
+            else if (keyPressed !== "=" && isNaN(keyPressed)) {
 
                 setPrev('')
             }
 
-            setResult(result + id)
+            setResult(result !== "Error" ? result + keyPressed : keyPressed)
         }
 
     }
 
-        const handleClear = () => {
-            setResult('')
-            setPrev({})
+    const handleValidateInput = (keyPressed, last) => {
+        let isValid = true
+        if (disallowOperator.find((op) => op == keyPressed) && result == "") {  //if operator is invalid (*,/,%,=)
+            console.log('invalid')
+            isValid = false
         }
+        else if (isNaN(keyPressed) && (isNaN(last) && last !== "*")) {  //if current and prev are both operator
+            console.log('invalid')
+            isValid = false
+        }
+        return isValid
+    }
 
-        const applyOperation = () => {
-            let output = result
-         //   alert(prev.vl) alert(this.node.parentNode.offsetWidth / this.node.offsetWidth)
-            if (prev.vl) {
-                output += prev.op + prev.vl
-            }
+
+    const handleClear = () => {
+        setResult('')
+        setPrev({})
+    }
+
+    const applyOperation = () => {
+        let output = result
+
+        if (prev.vl) {
+            output += prev.op + prev.vl
+        }
+        try {
             setResult(eval(output).toString())
         }
-
-        const handleback = () => {
-            let update = result.length > 0 && result.slice(0, -1)
-            setResult(update || "")
+        catch (err) {
+            setResult("Error")
         }
+
+    }
+
+    const handleback = () => {
+        let update = result.length > 0 && result.slice(0, -1)
+        setResult(update || "")
+    }
 
 
 
@@ -101,7 +113,7 @@ const Calculator = () => {
                         <div className="input-keys">
 
                             <div className="function-keys">
-                                <button className={`calculator-key`} onClick={() =>handleClear()}>AC</button>
+                                <button className={`calculator-key`} onClick={() => handleClear()}>AC</button>
                                 <button className={`calculator-key`} onClick={() => handleback()}>C</button>
                                 <button className={`calculator-key`}>%</button>
 
