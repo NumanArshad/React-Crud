@@ -25,7 +25,7 @@ axiosIntance.interceptors.request.use((config) => {
 
 axiosIntance.interceptors.response.use((response) => {
     store.dispatch({ type: STOP_LOADING })
-    console.dir(response)
+    //console.dir(response)
     return response
 }, (error) => {
     const expectedError =

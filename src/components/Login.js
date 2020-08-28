@@ -4,7 +4,6 @@ import joi from "joi-browser"
 import { login } from "../actions/authActions"
 import { customValidator } from "../utils/formValidation"
 import { useSelector } from "react-redux"
-import { Helmet } from "react-helmet"
 
 const Login = ({ history }) => {
   const [formData, setFormData] = useState({ email: '', password: '' })
@@ -69,9 +68,7 @@ const Login = ({ history }) => {
 
   return (
     <div id="login">
-      {/* <Helmet>
-        <title>Login | Crud App</title>
-      </Helmet> */}
+     
       <div className="container">
         <div id="login-row" className="row justify-content-center align-items-center">
           <div id="login-column" className="col-md-6">
