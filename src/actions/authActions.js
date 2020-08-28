@@ -1,7 +1,7 @@
 import axiosIntance from "../utils/configInterceptor"
 import jwtDecode from 'jwt-decode'
 import toast from '../utils/toast'
-
+import {history} from "../Routes"
 export const login = (signInData) => {
   const { email, password } = signInData
   axiosIntance.post('/users/login', { email: email, password: password })
@@ -41,10 +41,11 @@ const authConfig = (id, name, avatar, token) => {
   }
 }
 
-export const logout = () => {
+export const logout = (history) => {
   localStorage.clear()
   toast.success("Logout Successfully")
-  window.location.href = "/login"
+  //window.location.href = "/login"
+  history.push("/login")
   
 }
 

@@ -8,7 +8,7 @@ import moment from 'moment'
 const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) => {
   const [postText, handlePostText] = useState('')
   const [error, setError] = useState({})
-  //const [showModal, setShow] = useState(show)
+  
   const handleSubmit = () => {
     if (validateForm()) {
       createPost(postText)
@@ -16,17 +16,12 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
     }
   }
 
-  // useEffect(() => {
-  //   setShow(show)
- 
-  // }, [show])
-
   const schema = {
-    postText: joi.string().min(10).max(300).required().error(() => {
+    postText: joi.string().min(10).max(300).required().error(([{ context: { value } }]) => {
       return {
-        message: 'post must be between 10 and 300 characters.',
+        message: !value ? "Post text is required." : "Post must be between 10 and 300 characters.",
       }
-    }),
+    })
   };
 
   const validateForm = () => {

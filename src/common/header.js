@@ -20,7 +20,7 @@ const Header = ({ history }) => {
                     {localStorage.getItem('name')}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => logout()}>Logout</Dropdown.Item>
+                    <Dropdown.Item onClick={() => logout(history)}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </Navbar>

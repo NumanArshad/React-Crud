@@ -14,7 +14,7 @@ export const history = createBrowserHistory()
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} render={(props) => {
 
-        return (localStorage.getItem('token') ?
+        return (!localStorage.getItem('token') ?
             <><Header {...props} />
                 <Component {...props} /></>
             : <Redirect to="/login" />)
@@ -31,10 +31,12 @@ const DynamicRoute = () => {
                 <Route path="/signup" component={SignUp} exact />
                 <PrivateRoute path="/dashboard" exact component={Posts} />
                 <Route path="/calc" exact component={Calculator} />
+         
                 <PrivateRoute path="/profiles/new" exact component={CreateEditProfile} />
-                <Redirect from="/" to="/dashboard" />
                 
+                <Redirect from="/" to="/dashboard" />
                 <Route path="*" component={NotFound} />
+             
             </Switch>
 
 

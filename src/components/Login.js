@@ -4,7 +4,7 @@ import joi from "joi-browser"
 import { login } from "../actions/authActions"
 import { customValidator } from "../utils/formValidation"
 import { useSelector } from "react-redux"
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet"
 
 const Login = ({ history }) => {
   const [formData, setFormData] = useState({ email: '', password: '' })
@@ -14,23 +14,24 @@ const Login = ({ history }) => {
 
 
   useEffect(() => {
+    document.title="Login | Crud App"
     setError(customError)
   }, [customError])
 
   const schema = {
-    email: joi.string().email({ minDomainSegments: 2 }).error(() => {
+    email: joi.string().email({ minDomainSegments: 2 }).error(([{ context: { value } }]) => {
       return {
-        message: 'email is required.',
+        message: !value ? "Email is required." : "Invalid email.",
       }
     }),
-    password: joi.string().min(6).required().error(() => {
+    password: joi.string().min(6).required().error(([{ context: { value } }]) => {
       return {
-        message: 'password length must be atleast 6.',
+        message: !value ? "Password is required." : "Password length must be atleast 6."
       }
-    }),
+    })
   };
 
-  const {loading}=useSelector(state=>state.loadingReducer)
+  const { loading } = useSelector(state => state.loadingReducer)
 
   const submitForm = () => {
     if (validateForm()) {
@@ -61,16 +62,16 @@ const Login = ({ history }) => {
     let errors = customValidator(obj, fieldSchema)
     setError({ ...error, [name]: errors[name] })
   }
-  const signup=(event)=>{
+  const signup = (event) => {
     event.preventDefault()
     history.push('/signup')
   }
 
   return (
     <div id="login">
-    <Helmet>
-          <title>Login | Crud App</title>
-        </Helmet>
+      {/* <Helmet>
+        <title>Login | Crud App</title>
+      </Helmet> */}
       <div className="container">
         <div id="login-row" className="row justify-content-center align-items-center">
           <div id="login-column" className="col-md-6">
@@ -96,7 +97,7 @@ const Login = ({ history }) => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="remember-me" className="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
-                  <input type="button" name="submit" className="btn btn-info btn-md" value={loading? "Login processing...":'Login'} onClick={() => submitForm()} />
+                  <input type="button" name="submit" className="btn btn-info btn-md" value={loading ? "Login processing..." : 'Login'} onClick={() => submitForm()} />
                 </div>
                 <div id="register-link" className="text-right">
                   <a className="text-info" href="/" onClick={(event) => signup(event)}>Register here</a>
