@@ -22,22 +22,32 @@ class Calculator extends React.Component {
         document.removeEventListener('keyup', e => this.handleClick(e.key))
     }
 
-    handleClick = (keyPressed) => {
-        const { result, prev, invalidResult, scale } = this.state
-        keyPressed = keyPressed === '.' ? `0${keyPressed}` : keyPressed
+    componentDidUpdate(){
+        const {  scale } = this.state
+
         const actualScale = this.node?.parentNode.offsetWidth / this.node?.offsetWidth
-        if (actualScale < 1 && scale !== actualScale) {
+        if(scale===actualScale){
+            return
+        }
+        if (actualScale < 1 ) {
             this.setState({ scale: actualScale })
         }
-        else if (scale < 1 && scale !== actualScale) {
+        else if (scale < 1) {
             this.setState({ scale: 1 })
 
         }
+    }
+
+    handleClick = (keyPressed) => {
+        const { result, prev, invalidResult } = this.state
+      
+      
         let previousResult = result.slice(-1)
+        keyPressed = keyPressed === '.' && (isNaN(previousResult) || previousResult==='') ? `0${keyPressed}` : keyPressed
         if (this.handleValidateInput(keyPressed, previousResult)) {
             if (keyPressed === "=") {   //key pressed apply operation and save (apply operation and last value for later apply)
                 if (!prev.vl) {
-                    this.setState({ prev: { vl: result.match(/[+-]?\d+(\.\d+)?/g).slice(-1), op: result.replace('.', '').match(/(\D+)/)[0] } })
+                    this.setState({ prev: { vl: result.match(/[+-]?\d+(\.\d+)?/g).slice(-1)[0], op: result.replace('.', '').match(/(\D+)/)[0] } })
                 }
                 this.applyOperation()
                 return;
@@ -52,7 +62,7 @@ class Calculator extends React.Component {
 
     handleValidateInput = (keyPressed, last) => {
         const { result, disallowOperator } = this.state
-        let isValid = true
+       let isValid = true
         if (disallowOperator.find((op) => op === keyPressed) && result === "") {  //if operator is invalid (*,/,%,=)
             isValid = false
         }
@@ -74,7 +84,7 @@ class Calculator extends React.Component {
         }
         try {
             //eslint-disable-next-line
-            this.setState({ result: eval(output).toString() })
+      this.setState({ result: eval(output).toString() })
         }
         catch (err) {
             this.setState({ result: "Error" })
@@ -93,7 +103,6 @@ class Calculator extends React.Component {
         return (
             <div id="wrapper">
                 <div id="app">
-
                     <div className="calculator">
                         <div className="calculator-display">
                             <div
@@ -108,7 +117,7 @@ class Calculator extends React.Component {
                                 <div className="function-keys">
                                     <button className={`calculator-key`} onClick={() => this.handleClear()}>AC</button>
                                     <button className={`calculator-key`} onClick={() => this.handleback()}>C</button>
-                                    <button className={`calculator-key`}>%</button>
+                                    <button className={`calculator-key`} onClick={() => this.handleClick('%')}>%</button>
 
 
                                 </div>

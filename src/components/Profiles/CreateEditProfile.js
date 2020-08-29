@@ -1,16 +1,14 @@
 
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Spinner } from "react-bootstrap"
-import axiosIntance from "../../utils/configInterceptor"
 import joi from "joi-browser"
 import { customValidator } from "../../utils/formValidation"
-import toast from "../../utils/toast"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import LoaderSpinner from "../../common/Spinner"
 import MapView from "./MapView"
 import Chip from '@material-ui/core/Chip';
 import { TextField } from '@material-ui/core';
-
+import { getprofile, updateProfile } from "../../actions/profileActions"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 const CreateEditProfile = () => {
     const fixedOptions = [];
@@ -18,32 +16,26 @@ const CreateEditProfile = () => {
     const [formData, handleData] = useState({ handle: '', status: '', skills: [...fixedOptions] })
     const { handle, status, skills } = formData
     const [error, setError] = useState({})
+    const dispatch = useDispatch()
+    const { loading } = useSelector(state => state.loadingReducer)
+    const { profile } = useSelector(state => state.profileReducer)
+    useEffect(() => {
+        dispatch(getprofile())
+    }, [dispatch])
 
     useEffect(() => {
-        hitEndPoint({ method: 'get', url: '/profile' })
-    }, [])
-
-    const { loading } = useSelector(state => state.loadingReducer)
-
-    const hitEndPoint = (config) => {
-        axiosIntance(config).then((res) => {
-            if (config.method === "post") {
-                toast.success("Profile Updated Successfully")
-            }
-            const { handle, status, skills } = res.data
-            handleData({ handle, status, skills })
+        handleData({
+             handle: profile.handle || '', status: profile.state || '', skills: profile.skills || [...fixedOptions]
         })
-    }
+    }, [profile,fixedOptions])
 
     const handleStatus = (status) => {
         handleData({ ...formData, status: status })
     }
 
-
     const handleSubmit = () => {
         if (validateForm()) {
-            handleData({ handle: '', status: '', skills: [...fixedOptions] })
-            hitEndPoint({ method: 'post', url: '/profile', data: { handle: handle, status: status, skills: skills.toString() } })
+            dispatch(updateProfile({ ...formData, skills: skills.toString() }))
         }
     }
 
@@ -82,7 +74,6 @@ const CreateEditProfile = () => {
         <div className="container" style={{ marginTop: '60px' }}>
 
             {loading && <LoaderSpinner />}
-
             <Form className="col-6 mx-auto">
 
                 <Form.Group controlId="formBasicEmail">
@@ -101,15 +92,16 @@ const CreateEditProfile = () => {
                         label="Active"
                         name="formHorizontalRadios"
                         id="formHorizontalRadios1"
-                        defaultChecked
+                        checked={status === 'active'}  //on profile (initial and update)load set default status
                     />
+
                     <Form.Check
                         onClick={(e) => handleStatus('inactive')}
                         type="radio"
                         label="In Active"
                         name="formHorizontalRadios"
                         id="formHorizontalRadios2"
-
+                        checked={status === 'inactive'}
                     />
                 </Form.Group>
                 <Autocomplete
@@ -155,5 +147,5 @@ const CreateEditProfile = () => {
     )
 
 }
-// const top100Films = ["Js", "React", "Node"];
+
 export default CreateEditProfile

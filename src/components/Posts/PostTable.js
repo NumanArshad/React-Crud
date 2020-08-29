@@ -37,7 +37,7 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => getSinglePost(row._id)}>View</Dropdown.Item>
             <Dropdown.Item onClick={() => deletePost(row._id)} 
-            // disabled={row.user !== localStorage.getItem('id')}
+            disabled={row.user !== localStorage.getItem('id')}
             >Delete</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>)
@@ -77,10 +77,6 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
     }, [postsList])
   })
 
-
-
-
-
   return (
     <>
       <span>{loading && <LoaderSpinner />}</span>
@@ -90,8 +86,6 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
         pagination
         sortIcon={sortIcon}
         data={postsList}
-
-
       />
     </>
   );

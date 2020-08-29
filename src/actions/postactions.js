@@ -1,11 +1,9 @@
 import { GET_ALL_POSTS, GET_SINGLE_POST } from '../utils/types'
 import axiosIntance from "../utils/configInterceptor"
 import toast from '../utils/toast'
-import axios from "axios"
-export const fetchAllPosts = () => dispatch => {
-  axios.get('https://reqres.in/api/users')
-  axiosIntance.get('/posts')
 
+export const fetchAllPosts = () => dispatch => {
+  axiosIntance.get('/posts')
     .then(res => {
       dispatch({ type: GET_ALL_POSTS, payload: res.data })
     })

@@ -14,6 +14,7 @@ axiosIntance.interceptors.request.use((config) => {
         config.headers.common['Authorization'] = localStorage.getItem('token')
     }
     if (config.url.split('/').length <= 2 || config.url === "/users/login" || config.url === "/users/signup") {
+    alert("called")
         store.dispatch({ type: START_LOADING })
     }
     return config

@@ -4,7 +4,6 @@ import joi from "joi-browser"
 import { customValidator } from "../../utils/formValidation"
 import moment from 'moment'
 
-
 const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) => {
   const [postText, handlePostText] = useState('')
   const [error, setError] = useState({})
