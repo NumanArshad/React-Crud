@@ -7,7 +7,7 @@ import moment from 'moment'
 const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) => {
   const [postText, handlePostText] = useState('')
   const [error, setError] = useState({})
-  
+
   const handleSubmit = () => {
     if (validateForm()) {
       createPost(postText)
@@ -51,21 +51,21 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
                 onChange={(e) => handlePostText(e.target.value)} />
               <span className="invalid">{error?.postText}</span>
             </Form.Group>
-            {title==='View' &&  <Form.Group controlId="formBasicEmail">
+            {title === 'View' && <Form.Group controlId="formBasicEmail">
               <Form.Label>post date</Form.Label>
               <Form.Control type="text" placeholder="Enter post text"
                 value={moment(singlePost.date).format('MMMM Do YYYY h:mm:ss a')}
                 disabled={true}
-                />
+              />
               <span className="invalid">{error?.postText}</span>
             </Form.Group>}
-           
-           {title!=='View' && 
-           <Button variant="primary" onClick={handleSubmit}>
-              Submit
+
+            {title !== 'View' &&
+              <Button variant="primary" onClick={handleSubmit}>
+                Submit
        </Button>
-           }
-            
+            }
+
           </Form>
         </Modal.Body>
         <Modal.Footer>
