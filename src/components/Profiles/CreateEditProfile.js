@@ -11,8 +11,8 @@ import { TextField } from '@material-ui/core';
 import { getprofile, updateProfile } from "../../actions/profileActions"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 const CreateEditProfile = () => {
-    const fixedOptions = [];
-    const allSkills = ["Js", "React", "Node"];
+    const fixedOptions = [];  //filter skills (remove if selected /add if not selected)
+    const allSkills = ["Js", "React", "Node"];  //possible skills optins
     const [formData, handleData] = useState({ handle: '', status: '', skills: [...fixedOptions] })
     const { handle, status, skills } = formData
     const [error, setError] = useState({})
@@ -20,14 +20,16 @@ const CreateEditProfile = () => {
     const { loading } = useSelector(state => state.loadingReducer)
     const { profile } = useSelector(state => state.profileReducer)
     useEffect(() => {
+        document.title = "Profile | Crud App"
         dispatch(getprofile())
     }, [dispatch])
 
     useEffect(() => {
-        handleData({
-             handle: profile.handle || '', status: profile.state || '', skills: profile.skills || [...fixedOptions]
-        })
-    }, [profile,fixedOptions])
+        handleData(data => ({
+            handle: profile.handle || '', status: profile.status || '',
+            skills: profile?.skills?.split(',') || [...data.skills]
+        }))
+    }, [profile])
 
     const handleStatus = (status) => {
         handleData({ ...formData, status: status })
@@ -36,6 +38,7 @@ const CreateEditProfile = () => {
     const handleSubmit = () => {
         if (validateForm()) {
             dispatch(updateProfile({ ...formData, skills: skills.toString() }))
+            handleData({ handle: '', skills: [...fixedOptions] })
         }
     }
 
@@ -61,7 +64,7 @@ const CreateEditProfile = () => {
     const validateForm = () => {
         let isValidated = true
         setError({})
-        console.dir(schema)
+        //console.dir(schema)
         let errors = customValidator({ handle: handle, status: status, skills: skills }, schema)
         if (Object.keys(errors).length > 0) {
             setError(errors)
@@ -72,10 +75,8 @@ const CreateEditProfile = () => {
 
     return (
         <div className="container" style={{ marginTop: '60px' }}>
-
             {loading && <LoaderSpinner />}
             <Form className="col-6 mx-auto">
-
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Handle</Form.Label>
                     <Form.Control type="text" placeholder="Enter handle" value={handle} onChange={(e) => handleData({ ...formData, handle: e.target.value })}
@@ -122,7 +123,6 @@ const CreateEditProfile = () => {
                         tagValue.map((option, index) => (
                             <Chip
                                 label={option}
-                                onClick={() => alert("called")}
                                 {...getTagProps({ index })}
                             // disabled={value.indexOf(option) !== -1}
                             />
@@ -135,7 +135,7 @@ const CreateEditProfile = () => {
                 />
 
                 <Button variant="primary mt-2" onClick={() => handleSubmit()}>
-                    Save {loading ? "processing..." : ''}
+                    Save 
                 </Button>
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>

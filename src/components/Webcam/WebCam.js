@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Webcam from "react-webcam";
 import ImageCropper from "./Imagecrop"
 
@@ -7,22 +7,20 @@ const WebCam = () => {
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
 
+  useEffect(()=>document.title = "Webcam | Crud App", [])
+
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
   }, [webcamRef, setImgSrc]);
 
   return (
-    <div>
-
-      <Grid container direction="column" justify="center" alignItems="center" spacing={2} style={{ marginTop: "30px" }} >
-
+    <Grid container direction="column" justify="center" alignItems="center" spacing={2} style={{ marginTop: "30px" }} >
         <Grid item col={12} >
-          <h2>Webcamera</h2>
+          <h2>Webcamer</h2>
         </Grid>
         <Grid item col={12} className="webcame">
           <Webcam
-          
             audio={false}
             ref={webcamRef}
             height={'100%'}
@@ -38,9 +36,7 @@ const WebCam = () => {
         </Grid>
 
       </Grid>
-
-
-    </div>
+ 
   );
 };
 

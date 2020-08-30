@@ -59,7 +59,7 @@ const SignUp = () => {
 
     const { errors: customError } = useSelector(state => state.errorReducer)
     useEffect(() => {
-        document.title="SignUp | Crud App"
+        document.title = "SignUp | Crud App"
 
         setError(customError)
     }, [customError])
@@ -68,7 +68,7 @@ const SignUp = () => {
 
     return (
         <div id="login">
-          
+
             <div className="container">
                 <div id="login-row" className="row justify-content-center align-items-center">
                     <div id="login-column" className="col-md-6">

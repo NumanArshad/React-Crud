@@ -9,12 +9,11 @@ export const getprofile = () => dispatch => {
 }
 
 export const updateProfile = (postText) => dispatch => {
-    axiosIntance.post('/profile',
-        { data: postText })
+    axiosIntance.post('/profile', { data: postText })
         .then(
             res => {
-                if (res.status === 200) {
-                    toast.success("Post Created Successfully")
+                if (res.status === 201) {
+                    toast.success("Profile updated successfully.")
                     dispatch(getprofile())
                 }
             })

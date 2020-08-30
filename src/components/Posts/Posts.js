@@ -7,24 +7,23 @@ import { fetchAllPosts, createPost, getSinglePost, deletePost } from '../../acti
 
 const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, singlePost, deletePost }) => {
     const [isOpen, setTrigger] = useState(false)
-  const[title,setTitle]=useState('')
+    const [title, setTitle] = useState('')
     useEffect(() => {
         fetchAllPosts()
     }, [fetchAllPosts])
 
     useEffect(() => {
-        if(Object.entries(singlePost).length > 0){
+        if (Object.entries(singlePost).length > 0) {
             setTitle('View')
-          setTrigger(true)
+            setTrigger(true)
         }
     }, [singlePost])
 
-    const triggerModal =() => {
+    const triggerModal = () => {
         setTrigger(isOpen ? false : true)
-      
     }
 
-    const triggerCreate=()=>{ 
+    const triggerCreate = () => {
         setTitle('Create')
         triggerModal()
     }
@@ -32,12 +31,12 @@ const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, s
     return (
         <div className="container">
             <div className="my-4"></div>
-                <Button variant="primary" className="mt-4" onClick={triggerCreate}>
-                    Create New Post
+            <Button variant="primary" className="mt-4" onClick={triggerCreate}>
+                Create New Post
                </Button>
-                  <PostTable postsList={postsList} loading={loading} getSinglePost={getSinglePost} deletePost={deletePost} />
-                <CreateEditPost show={isOpen} handleClose={triggerModal} singlePost={singlePost} createPost={createPost} title={title} />
-         
+            <PostTable postsList={postsList} loading={loading} getSinglePost={getSinglePost} deletePost={deletePost} />
+            <CreateEditPost show={isOpen} handleClose={triggerModal} singlePost={singlePost} createPost={createPost} title={title} />
+
         </div>
     )
 }

@@ -13,7 +13,7 @@ const Login = ({ history }) => {
 
 
   useEffect(() => {
-    document.title="Login | Crud App"
+    document.title = "Login | Crud App"
     setError(customError)
   }, [customError])
 
@@ -43,7 +43,7 @@ const Login = ({ history }) => {
     setError({})
     // console.dir(schema)
     let errors = customValidator({ email: email, password: password }, schema)
-    console.log(errors)
+    // console.log(errors)
     if (Object.keys(errors).length > 0) {
       setError(errors)
       isValidated = false
@@ -68,7 +68,7 @@ const Login = ({ history }) => {
 
   return (
     <div id="login">
-     
+
       <div className="container">
         <div id="login-row" className="row justify-content-center align-items-center">
           <div id="login-column" className="col-md-6">
@@ -80,7 +80,7 @@ const Login = ({ history }) => {
                   <input type="text" name="username" id="username" className="form-control"
                     value={email} onBlur={() => validateProperty('email', email)}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-                  <div class="invalid">
+                  <div className="invalid">
                     {error?.email}
                   </div>
                 </div>

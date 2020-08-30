@@ -14,7 +14,6 @@ axiosIntance.interceptors.request.use((config) => {
         config.headers.common['Authorization'] = localStorage.getItem('token')
     }
     if (config.url.split('/').length <= 2 || config.url === "/users/login" || config.url === "/users/signup") {
-    alert("called")
         store.dispatch({ type: START_LOADING })
     }
     return config
@@ -34,10 +33,10 @@ axiosIntance.interceptors.response.use((response) => {
         error.response.status >= 400 &&
         error.response.status < 500;
     if (!expectedError) {
-        toast.error("Unexpected error")
+        toast.error("Unexpected error.")
     }
     else {
-      //  toast.error(error)
+        //  toast.error(error)
         store.dispatch(seterror(error.response))
     }
     store.dispatch({ type: STOP_LOADING })

@@ -36,8 +36,8 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
           <Dropdown.Toggle id="dropdown-basic">Actions</Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => getSinglePost(row._id)}>View</Dropdown.Item>
-            <Dropdown.Item onClick={() => deletePost(row._id)} 
-            disabled={row.user !== localStorage.getItem('id')}
+            <Dropdown.Item onClick={() => deletePost(row._id)}
+              disabled={row.user !== localStorage.getItem('id')}
             >Delete</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>)
@@ -48,7 +48,7 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
   const sortIcon = <ArrowDownward />;
 
   useEffect(() => {
-
+    document.title = "Posts | Crud App"
     let rows = document.getElementsByClassName("sc-fzoLsD")
     for (let row of rows) {
       row.draggable = true
@@ -64,16 +64,12 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
       const sourceElement = document.getElementById(dragId)
       const targetElement = event.target.parentNode
       if (!sourceElement || !targetElement) return;
-
       if (targetElement.parentElement !== sourceElement.parentElement) return;
-
       if (+Y < event.clientY) {
         targetElement.parentElement.insertBefore(sourceElement, targetElement.nextSibling)
         return
       }
-      // else {
       targetElement.parentElement.insertBefore(sourceElement, targetElement)
-      // }
     }, [postsList])
   })
 

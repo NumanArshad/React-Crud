@@ -16,6 +16,7 @@ class Calculator extends React.Component {
     node = createRef('')
 
     componentDidMount() {
+        document.title = "Calculator | Crud App"
         document.addEventListener('keyup', e => this.handleClick(e.key))
     }
     componentWillUnmount() {

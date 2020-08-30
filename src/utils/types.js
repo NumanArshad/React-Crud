@@ -14,6 +14,5 @@ export const SIGN_IN = "SIGNIN"
 /////////sign_up/////
 export const SIGN_UP = "SIGN_UP"
 
-
 ////////error handling///////
 export const SET_ERROR = "SET_ERROR"

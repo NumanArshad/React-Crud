@@ -7,14 +7,14 @@ import CreateEditProfile from './components/Profiles/CreateEditProfile'
 import Header from "./common/header"
 import NotFound from "./common/NotFound"
 import Calculator from "./components/Calculator"
-import WebCam from "./components/Webcame/WebCam"
+import WebCam from "./components/Webcam/WebCam"
 import { createBrowserHistory } from 'history'
 
 export const history = createBrowserHistory({forceRefresh:true})
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} render={(props) => {
 
-        return (!localStorage.getItem('token') ?
+        return (localStorage.getItem('token') ?
             <><Header {...props} />
                 <Component {...props} /></>
             : <Redirect to="/login" />)

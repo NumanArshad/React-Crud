@@ -46,8 +46,8 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>post message</Form.Label>
               <Form.Control type="text" placeholder="Enter post text"
-                value={title==="View" ? singlePost?.text : postText}
-                disabled={title==='View'}
+                value={title === "View" ? singlePost?.text : postText}
+                disabled={title === 'View'}
                 onChange={(e) => handlePostText(e.target.value)} />
               <span className="invalid">{error?.postText}</span>
             </Form.Group>
@@ -55,26 +55,21 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
               <Form.Label>post date</Form.Label>
               <Form.Control type="text" placeholder="Enter post text"
                 value={moment(singlePost.date).format('MMMM Do YYYY h:mm:ss a')}
-                disabled={true}
-              />
+                disabled={true} />
               <span className="invalid">{error?.postText}</span>
             </Form.Group>}
 
             {title !== 'View' &&
               <Button variant="primary" onClick={handleSubmit}>
                 Submit
-       </Button>
+              </Button>
             }
 
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-            </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-            </Button>
+          <Button variant="secondary" onClick={handleClose}>Close</Button>
+          <Button variant="primary" onClick={handleClose}>Save Changes </Button>
         </Modal.Footer>
       </Modal>
     </>

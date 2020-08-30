@@ -5,6 +5,6 @@ const LoaderSpinner = () => {
       <div class="spinner"></div>
       <br />
       Loading...
-</div>)
+    </div>)
 }
 export default LoaderSpinner
