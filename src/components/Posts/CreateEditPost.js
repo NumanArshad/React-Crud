@@ -26,7 +26,7 @@ const CreateEditPost = ({ show, handleClose, createPost, singlePost, title }) =>
   const validateForm = () => {
     let isValidated = true
     setError({})
-    console.dir(schema)
+    //console.dir(schema)
     let errors = customValidator({ postText: postText }, schema)
     if (Object.keys(errors).length > 0) {
       setError(errors)

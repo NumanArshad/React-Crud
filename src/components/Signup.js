@@ -37,7 +37,7 @@ const SignUp = () => {
     const validateForm = () => {
         let isValidated = true
         setError({})
-        console.dir(schema)
+       // console.dir(schema)
         let errors = customValidator({ name: name, email: email, password: password }, schema)
         if (Object.keys(errors).length > 0) {
             setError(errors)
