@@ -40,7 +40,7 @@ function generateDownload(previewCanvas, crop) {
       const previewUrl = window.URL.createObjectURL(blob);
 
       const anchor = document.createElement("a");
-      anchor.download = "cropPreview.png";
+      anchor.download = "cropImage.png";
       anchor.href = URL.createObjectURL(blob);
       anchor.click();
 

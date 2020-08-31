@@ -27,7 +27,7 @@ const CreateEditProfile = () => {
     useEffect(() => {
         handleData(data => ({
             handle: profile.handle || '', status: profile.status || '',
-            skills: profile?.skills?.split(',') || [...data.skills]
+            skills: profile?.skills || [...data.skills]
         }))
     }, [profile])
 
@@ -135,7 +135,7 @@ const CreateEditProfile = () => {
                 />
 
                 <Button variant="primary mt-2" onClick={() => handleSubmit()}>
-                    Save 
+                    Save
                 </Button>
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
