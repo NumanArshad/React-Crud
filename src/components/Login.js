@@ -61,6 +61,7 @@ const Login = ({ history }) => {
     let errors = customValidator(obj, fieldSchema)
     setError({ ...error, [name]: errors[name] })
   }
+  
   const signup = (event) => {
     event.preventDefault()
     history.push('/signup')

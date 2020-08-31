@@ -10,7 +10,6 @@ class Calculator extends React.Component {
             invalidResult: ["Error", "Infinity"],
             scale: 1
         }
-
     }
 
     node = createRef('')
@@ -23,14 +22,14 @@ class Calculator extends React.Component {
         document.removeEventListener('keyup', e => this.handleClick(e.key))
     }
 
-    componentDidUpdate(){
-        const {  scale } = this.state
+    componentDidUpdate() {
+        const { scale } = this.state
 
         const actualScale = this.node?.parentNode.offsetWidth / this.node?.offsetWidth
-        if(scale===actualScale){
+        if (scale === actualScale) {
             return
         }
-        if (actualScale < 1 ) {
+        if (actualScale < 1) {
             this.setState({ scale: actualScale })
         }
         else if (scale < 1) {
@@ -41,30 +40,39 @@ class Calculator extends React.Component {
 
     handleClick = (keyPressed) => {
         const { result, prev, invalidResult } = this.state
-      
-      
+
         let previousResult = result.slice(-1)
-        keyPressed = keyPressed === '.' && (isNaN(previousResult) || previousResult==='') ? `0${keyPressed}` : keyPressed
+        keyPressed = keyPressed === '.' && (isNaN(previousResult) || previousResult === '') ? `0${keyPressed}` : keyPressed
+
         if (this.handleValidateInput(keyPressed, previousResult)) {
             if (keyPressed === "=") {   //key pressed apply operation and save (apply operation and last value for later apply)
                 if (!prev.vl) {
-                    this.setState({ prev: { vl: result.match(/[+-]?\d+(\.\d+)?/g).slice(-1)[0], op: result.replace('.', '').match(/(\D+)/)[0] } })
+                    const { operation, lastNumber } = this.splitExpression(result)
+                    this.setState({ prev: { vl: lastNumber, op: operation } })
                 }
                 this.applyOperation()
                 return;
             }
             else if (keyPressed !== "=" && isNaN(keyPressed)) {   //
-                this.setState({ prev: {} })
+                this.setState({ prev: { vl: "", op: "" } })
             }
-
             this.setState({ result: !invalidResult.includes(result) ? result + keyPressed : keyPressed })
+        }
+    }
+
+    splitExpression = (result) => {
+        let operation = result.replace('.', '').match(/(\D+)/)[0]
+        let index = result.split('').findIndex((exp) => exp === operation)
+        return {
+            operation,
+            lastNumber: result.split('').splice(index + 1).toString().replace(',', '')
         }
     }
 
     handleValidateInput = (keyPressed, last) => {
         const { result, disallowOperator } = this.state
-       let isValid = true
-        if (disallowOperator.find((op) => op === keyPressed) && result === "") {  //if operator is invalid (*,/,%,=)
+        let isValid = true
+        if (disallowOperator.find((op) => op === keyPressed) && result === "") {  //if operator is invalid (*,/,%,=) on start
             isValid = false
         }
         else if (isNaN(keyPressed) && (isNaN(last) && last !== "*")) {  //if current and prev are both operator except power operator
@@ -85,14 +93,14 @@ class Calculator extends React.Component {
         }
         try {
             //eslint-disable-next-line
-      this.setState({ result: eval(output).toString() })
+            this.setState({ result: eval(output).toString() })
         }
         catch (err) {
             this.setState({ result: "Error" })
         }
     }
 
-    handleback = () => {
+    handleBack = () => {
         const { result } = this.state
         let update = result.length > 0 && result.slice(0, -1)
         this.setState({ result: update || "" })
@@ -117,7 +125,7 @@ class Calculator extends React.Component {
 
                                 <div className="function-keys">
                                     <button className={`calculator-key`} onClick={() => this.handleClear()}>AC</button>
-                                    <button className={`calculator-key`} onClick={() => this.handleback()}>C</button>
+                                    <button className={`calculator-key`} onClick={() => this.handleBack()}>C</button>
                                     <button className={`calculator-key`} onClick={() => this.handleClick('%')}>%</button>
 
 
