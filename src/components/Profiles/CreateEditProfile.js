@@ -36,7 +36,7 @@ const CreateEditProfile = () => {
     }
 
     const handleSubmit = () => {
-        if (validateForm()) {
+      if (validateForm()) {
             dispatch(updateProfile({ ...formData, skills: skills.toString() }))
             handleData({ handle: '', skills: [...fixedOptions] })
         }
@@ -53,11 +53,11 @@ const CreateEditProfile = () => {
         //         message: 'status is required.',
         //     }
         // }),
-        skills: joi.array().min(1).required().error(() => {
-            return {
-                message: 'please check atleast 1 skill.',
-            }
-        }),
+        // skills: joi.array().min(1).required().error(() => {
+        //     return {
+        //         message: 'please check atleast 1 skill.',
+        //     }
+        // }),
     };
     
 
@@ -65,8 +65,7 @@ const CreateEditProfile = () => {
         let isValidated = true
         setError({})
         //console.dir(schema)
-        alert(JSON.stringify(skills))
-        let errors = customValidator({ handle: handle, status: status, skills: skills }, schema)
+        let errors = customValidator({ handle: handle }, schema)
         console.dir(errors)
         if (Object.keys(errors).length > 0) {
             setError(errors)
@@ -75,18 +74,6 @@ const CreateEditProfile = () => {
         return isValidated
     }
 
-    const validateProperty = (name, value) => {
-        alert(name,value)
-        const obj = {
-          [name]: value
-        };
-        const fieldSchema = {
-          [name]: schema[name]
-        };
-        let errors = customValidator(obj, fieldSchema)
-        setError({ ...error, [name]: errors[name] })
-      }
-
     return (
         <div className="container" style={{ marginTop: '60px' }}>
             {loading && <LoaderSpinner />}
@@ -94,7 +81,7 @@ const CreateEditProfile = () => {
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Handle</Form.Label>
                     <Form.Control type="text" placeholder="Enter handle" value={handle} onChange={(e) => handleData({ ...formData, handle: e.target.value })}
-                    onBlur={() => validateProperty('handle', handle)}/>
+                    />
                     <div class="invalid">
                         {error?.handle}
                     </div>
@@ -132,7 +119,6 @@ const CreateEditProfile = () => {
                         });
                        
                     }}
-                  //  onBlur={() => validateProperty('skills', skills)}
                     options={allSkills}
                     getOptionLabel={(option) => option}
                     renderTags={(tagValue, getTagProps) =>
@@ -149,9 +135,7 @@ const CreateEditProfile = () => {
                         <TextField {...params} label="Skills" variant="outlined" placeholder="select skills" />
                     )}
                 />
-                <div class="invalid">
-                      {error?.skills}
-                    </div>
+             
                 <Button variant="primary mt-2" onClick={() => handleSubmit()}>
                     Save
                 </Button>
