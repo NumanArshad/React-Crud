@@ -7,7 +7,7 @@ const WebCam = () => {
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
 
-  useEffect(()=>document.title = "Webcam | Crud App", [])
+  useEffect(()=>{document.title = "Webcam | Crud App"},[])
 
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -17,7 +17,7 @@ const WebCam = () => {
   return (
     <Grid container direction="column" justify="center" alignItems="center" spacing={2} style={{ marginTop: "30px" }} >
         <Grid item col={12} >
-          <h2>Webcamer</h2>
+          <h2>Webcam</h2>
         </Grid>
         <Grid item col={12} className="webcame">
           <Webcam
@@ -42,4 +42,3 @@ const WebCam = () => {
 
 export default WebCam
 
-      // https://www.npmjs.com/package/react-webcam
