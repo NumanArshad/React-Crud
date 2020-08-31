@@ -18,7 +18,6 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
       name: 'Text',
       selector: 'text',
       sortable: true,
-
     },
     {
       name: 'date',
@@ -45,34 +44,44 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
     },
   ];
 
-  const sortIcon = <ArrowDownward />;
-
-  useEffect(() => {
-    document.title = "Posts | Crud App"
+  const triggerDraggable = () => {
     let rows = document.getElementsByClassName("sc-fzoLsD")
     for (let row of rows) {
       row.draggable = true
     }
+  }
+
+  useEffect(() => {
+    document.title = "Posts | Crud App"
+    triggerDraggable()
     document.addEventListener("dragstart", (event) => {
       event.dataTransfer.setData('dragElement', `${event.target.id} ${event.clientY}`)
     })
-
     document.addEventListener("dragover", (event) => event.preventDefault())
+    document.addEventListener("drop", handleDrop)
+    return (() => {
+      document.removeEventListener("dragstart", (event) => {
+        event.dataTransfer.setData('dragElement', `${event.target.id} ${event.clientY}`)
+      })
+      document.removeEventListener("dragover", (event) => event.preventDefault())
+      document.removeEventListener("drop", handleDrop)
+    })
+  }, [postsList])
 
-    document.addEventListener("drop", (event) => {
-      const [dragId, Y] = event.dataTransfer.getData('dragElement').split(' ')
-      const sourceElement = document.getElementById(dragId)
-      const targetElement = event.target.parentNode
-      if (!sourceElement || !targetElement) return;
-      if (targetElement.parentElement !== sourceElement.parentElement) return;
-      if (+Y < event.clientY) {
-        targetElement.parentElement.insertBefore(sourceElement, targetElement.nextSibling)
-        return
-      }
-      targetElement.parentElement.insertBefore(sourceElement, targetElement)
-    }, [postsList])
-  })
+  const handleDrop = (event) => {
+    const [dragId, Y] = event.dataTransfer.getData('dragElement').split(' ')
+    const sourceElement = document.getElementById(dragId)
+    const targetElement = event.target.parentNode
+    if (!sourceElement || !targetElement) return;
+    if (targetElement.parentElement !== sourceElement.parentElement) return;
+    if (+Y < event.clientY) {
+      targetElement.parentElement.insertBefore(sourceElement, targetElement.nextSibling)
+      return
+    }
+    targetElement.parentElement.insertBefore(sourceElement, targetElement)
+  }
 
+  const sortIcon = <ArrowDownward />;
   return (
     <>
       <span>{loading && <LoaderSpinner />}</span>
@@ -80,6 +89,8 @@ const PostTable = ({ postsList, loading, getSinglePost, deletePost }) => {
         striped={true}
         columns={columns}
         pagination
+        onChangeRowsPerPage={triggerDraggable}
+        onChangePage={triggerDraggable}
         sortIcon={sortIcon}
         data={postsList}
       />

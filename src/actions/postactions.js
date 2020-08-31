@@ -1,4 +1,4 @@
-import { GET_ALL_POSTS, GET_SINGLE_POST } from '../utils/types'
+import { GET_ALL_POSTS, GET_SINGLE_POST, CLEAR_SINGLE_POST } from '../utils/types'
 import axiosIntance from "../utils/configInterceptor"
 import toast from '../utils/toast'
 
@@ -18,6 +18,10 @@ export const createPost = (postText) => dispatch => {
                     dispatch(fetchAllPosts())
                 }
             })
+}
+
+export const clearSinglePost = () => dispatch => {
+    dispatch({ type: CLEAR_SINGLE_POST })
 }
 
 export const getSinglePost = (postId) => dispatch => {

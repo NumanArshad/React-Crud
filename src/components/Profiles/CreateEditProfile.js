@@ -31,12 +31,20 @@ const CreateEditProfile = () => {
         }))
     }, [profile])
 
+    useEffect(() => {
+        // eslint-disable-next-line
+        if (status) {  //validate skills if component has mounted and status is controlled input for mount
+            validateProperty('skills', skills)
+        }
+        // eslint-disable-next-line
+    }, [skills])
+
     const handleStatus = (status) => {
         handleData({ ...formData, status: status })
     }
 
     const handleSubmit = () => {
-      if (validateForm()) {
+        if (validateForm()) {
             dispatch(updateProfile({ ...formData, skills: skills.toString() }))
             handleData({ handle: '', skills: [...fixedOptions] })
         }
@@ -48,30 +56,36 @@ const CreateEditProfile = () => {
                 message: 'handle is required.',
             }
         }),
-        // status: joi.string().required().error(() => {
-        //     return {
-        //         message: 'status is required.',
-        //     }
-        // }),
-        // skills: joi.array().min(1).required().error(() => {
-        //     return {
-        //         message: 'please check atleast 1 skill.',
-        //     }
-        // }),
+        skills: joi.array().items(joi.string().required()).error(() => {
+
+            return {
+                message: "select atleast 1 skill."
+            }
+        }),
     };
-    
 
     const validateForm = () => {
         let isValidated = true
         setError({})
         //console.dir(schema)
-        let errors = customValidator({ handle: handle }, schema)
+        let errors = customValidator({ handle: handle, skills: skills }, schema)
         console.dir(errors)
         if (Object.keys(errors).length > 0) {
             setError(errors)
             isValidated = false
         }
         return isValidated
+    }
+
+    const validateProperty = (name, value) => {
+        const obj = {
+            [name]: value
+        };
+        const fieldSchema = {
+            [name]: schema[name]
+        };
+        let errors = customValidator(obj, fieldSchema)
+        setError({ ...error, [name]: errors[name] })
     }
 
     return (
@@ -81,7 +95,7 @@ const CreateEditProfile = () => {
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Handle</Form.Label>
                     <Form.Control type="text" placeholder="Enter handle" value={handle} onChange={(e) => handleData({ ...formData, handle: e.target.value })}
-                    />
+                        onBlur={() => validateProperty('handle', handle)} />
                     <div class="invalid">
                         {error?.handle}
                     </div>
@@ -117,7 +131,7 @@ const CreateEditProfile = () => {
                                 ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
                             ]
                         });
-                       
+
                     }}
                     options={allSkills}
                     getOptionLabel={(option) => option}
@@ -135,7 +149,9 @@ const CreateEditProfile = () => {
                         <TextField {...params} label="Skills" variant="outlined" placeholder="select skills" />
                     )}
                 />
-             
+                <div class="invalid">
+                    {error?.skills}
+                </div>
                 <Button variant="primary mt-2" onClick={() => handleSubmit()}>
                     Save
                 </Button>

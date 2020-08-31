@@ -1,7 +1,7 @@
 ////post action types///
 export const GET_ALL_POSTS = "ALL POSTS"
 export const GET_SINGLE_POST = "FETCH SINGLE POST"
-
+export const CLEAR_SINGLE_POST = "CLEAR_SINGLE_POST"
 export const START_LOADING = "START LOADINGH"
 export const STOP_LOADING = "STOP LOADINGH"
 

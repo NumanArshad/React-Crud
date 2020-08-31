@@ -3,9 +3,9 @@ import { Button } from 'react-bootstrap'
 import CreateEditPost from './CreateEditPost'
 import PostTable from './PostTable'
 import { connect } from 'react-redux'
-import { fetchAllPosts, createPost, getSinglePost, deletePost } from '../../actions/postactions'
+import { fetchAllPosts, createPost, getSinglePost, deletePost,clearSinglePost } from '../../actions/postactions'
 
-const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, singlePost, deletePost }) => {
+const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, singlePost, deletePost,clearSinglePost }) => {
     const [isOpen, setTrigger] = useState(false)
     const [title, setTitle] = useState('')
     useEffect(() => {
@@ -13,6 +13,7 @@ const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, s
     }, [fetchAllPosts])
 
     useEffect(() => {
+       
         if (Object.entries(singlePost).length > 0) {
             setTitle('View')
             setTrigger(true)
@@ -20,6 +21,9 @@ const Posts = ({ fetchAllPosts, postsList, loading, createPost, getSinglePost, s
     }, [singlePost])
 
     const triggerModal = () => {
+        if(isOpen && title==="View"){
+            clearSinglePost()
+        }
         setTrigger(isOpen ? false : true)
     }
 
@@ -47,4 +51,4 @@ const mapStateToProps = (state) => ({
     singlePost: state.postReducer.single_post
 })
 
-export default connect(mapStateToProps, { fetchAllPosts, createPost, getSinglePost, deletePost })(Posts)
+export default connect(mapStateToProps, { fetchAllPosts, createPost, getSinglePost, deletePost,clearSinglePost })(Posts)
